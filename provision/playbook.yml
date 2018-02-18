@@ -1,0 +1,24 @@
+---
+- hosts: all
+  remote_user: root
+  vars_files:
+    - variables.yml
+  pre_tasks:
+    - name: Install required system packages.
+      apt: pkg={{ item }} state=installed update-cache=yes
+      become: true
+      with_items:
+        - gcc
+        - python-simplejson
+        - git-core
+  roles:
+    - {
+        role: geerlingguy.postgresql,
+        tags: 'postgre',
+        become: true
+      }
+  tasks:
+    - name: Test connection
+      ping:
+    - include: 'install-go.yml'
+      tags: 'golang'

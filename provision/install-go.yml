@@ -1,0 +1,10 @@
+# - name: Download Go Binaries
+#   get_url:
+#     url: https://dl.google.com/go/go1.9.4.linux-amd64.tar.gz
+#     dest: /tmp
+
+# - name: Extract Go Binaries
+#   shell: tar -C /usr/local -xvzf go1.9.4.linux-amd64.tar.gz
+#   args:
+#     chdir: /tmp
+#   become: true

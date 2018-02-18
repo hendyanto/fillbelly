@@ -1,0 +1,16 @@
+database_password: S7D6F9S7S1
+
+postgresql_user: postgres
+postgresql_group: postgres
+postgresql_unix_socket_directories:
+  - /var/run/postgresql
+postgresql_locales:
+  - 'en_US.UTF-8'
+postgresql_databases:
+  - name: go_database
+  - name: go_database_test
+postgresql_users:
+  - name: go_datauser
+    password: "{{database_password}}"
+    role_attr_flags: "SUPERUSER"
+    db: go_database
