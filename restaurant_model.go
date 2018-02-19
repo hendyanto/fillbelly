@@ -7,18 +7,19 @@ import (
 )
 
 type Restaurant struct {
-    id int
-    name string
-    rating int
-    id_category int
-    longitude string
-    latitude string
+    Id int
+    Name string
+    Rating int
+    Id_category int
+    Longitude float64
+    Latitude float64
+    Category_name string
 }
 
 func InsertNewRestaurant(r Restaurant){
 	db, _ := sql.Open("postgres", DbConnectionString());
 	quoted := pq.QuoteIdentifier("restaurants")
-	_, err := db.Exec(fmt.Sprintf("INSERT INTO %s (name,rating,longitude,latitude,id_category) VALUES ($1, $2, $3, $4, $5)", quoted), r.name, r.rating, r.longitude, r.latitude, r.id_category)
+	_, err := db.Exec(fmt.Sprintf("INSERT INTO %s (name,rating,longitude,latitude,id_category) VALUES ($1, $2, $3, $4, $5)", quoted), r.Name, r.Rating, r.Longitude, r.Latitude, r.Id_category)
 	if err != nil {
 		fmt.Printf("Error: ", err)
 	}
@@ -32,7 +33,7 @@ func GetAllRestaurant() []Restaurant {
 	if err != nil {
 		fmt.Println("pq error: ?", err)
 	} else {
-		rows, err_sql := db.Query("SELECT restaurants.* FROM restaurants INNER JOIN categories on restaurants.id_category = categories.id;")
+		rows, err_sql := db.Query("SELECT restaurants.*, categories.name AS category_name FROM restaurants INNER JOIN categories on restaurants.id_category = categories.id;")
 
 		if err_sql != nil {
 			fmt.Println("Query Error: ?", err_sql)
@@ -40,16 +41,18 @@ func GetAllRestaurant() []Restaurant {
 			for rows.Next() {
 				r := Restaurant {}
 
-				err = rows.Scan(&r.id, &r.name, &r.rating, &r.longitude, &r.latitude, &r.id_category)
+				err = rows.Scan(&r.Id, &r.Name, &r.Rating, &r.Longitude, &r.Latitude, &r.Id_category, &r.Category_name)
 				if err != nil {
 					fmt.Println("ERROR", err)
 				}
 				results = append(results, Restaurant {
-					name: r.name,
-					rating: r.rating,
-					longitude: r.longitude,
-					latitude: r.latitude,
-					id_category: r.id_category })
+					Name: r.Name,
+					Rating: r.Rating,
+					Longitude: r.Longitude,
+					Latitude: r.Latitude,
+					Id_category: r.Id_category,
+					Category_name: r.Category_name,
+				 })
 			}
 		}
 	}
