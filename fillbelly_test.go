@@ -15,9 +15,11 @@ func isEnvTest() bool{
 func ResetDB() {
 	if(isEnvTest()) {
 		dropRestaurantTable()
+		dropReservationTable()
 		dropCategoryTable()
 		createRestaurantTable()
 		createCategoryTable()
+		createReservationTable()
 	} else {
 		fmt.Printf("ENV is not test, aborting db reset");
 	}
@@ -28,6 +30,17 @@ func dropRestaurantTable(){
 
 	db, _ := sql.Open("postgres", DbConnectionString());
 	quoted := pq.QuoteIdentifier("restaurants")
+	_, err := db.Exec(fmt.Sprintf("DROP TABLE %s", quoted))
+	if err != nil {
+		fmt.Printf("Error: ", err)
+	}
+}
+
+func dropReservationTable(){
+	if(!isEnvTest()) { return }
+
+	db, _ := sql.Open("postgres", DbConnectionString());
+	quoted := pq.QuoteIdentifier("reservations")
 	_, err := db.Exec(fmt.Sprintf("DROP TABLE %s", quoted))
 	if err != nil {
 		fmt.Printf("Error: ", err)
@@ -58,6 +71,14 @@ func clearRestaurantTable(){
 func createRestaurantTable(){
 	db, _ := sql.Open("postgres", DbConnectionString());
 	_, err := db.Exec(fmt.Sprintf("CREATE TABLE restaurants ( id serial primary key, name varchar(200), rating integer, longitude float, latitude float, id_category int);"))
+	if err != nil {
+		fmt.Printf("Error: ", err)
+	}
+}
+
+func createReservationTable(){
+	db, _ := sql.Open("postgres", DbConnectionString());
+	_, err := db.Exec(fmt.Sprintf("CREATE TABLE reservations ( id serial primary key, name varchar(200), id_restaurant integer, date timestamp, created timestamp);"))
 	if err != nil {
 		fmt.Printf("Error: ", err)
 	}
@@ -147,3 +168,20 @@ func TestRestaurantModel(t *testing.T) {
 	}
 }
 
+func TestReservationModel(t *testing.T) {
+	if(!isEnvTest()) { return }
+	ResetDB()
+
+	category := createCategoryFactory(Category{ })
+	restaurant := createRestaurantFactory(Restaurant{
+		Id_category: category.id,
+	})
+
+	reservation := createReservationFactory(Reservation{
+		id_restaurant: restaurant.Id,
+	})
+	
+	if(reservation.id == 0) {
+		t.Errorf("Reservation is not created.")
+	}
+}

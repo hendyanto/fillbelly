@@ -16,13 +16,16 @@ type Restaurant struct {
     Category_name string
 }
 
-func InsertNewRestaurant(r Restaurant){
+func InsertNewRestaurant(r Restaurant) int {
+	var id int
 	db, _ := sql.Open("postgres", DbConnectionString());
 	quoted := pq.QuoteIdentifier("restaurants")
-	_, err := db.Exec(fmt.Sprintf("INSERT INTO %s (name,rating,longitude,latitude,id_category) VALUES ($1, $2, $3, $4, $5)", quoted), r.Name, r.Rating, r.Longitude, r.Latitude, r.Id_category)
+	err := db.QueryRow(fmt.Sprintf("INSERT INTO %s (name,rating,longitude,latitude,id_category) VALUES ($1, $2, $3, $4, $5) RETURNING id", quoted), r.Name, r.Rating, r.Longitude, r.Latitude, r.Id_category).Scan(&id)
 	if err != nil {
 		fmt.Printf("Error: ", err)
 	}
+
+	return id
 }
 
 func GetAllRestaurant() []Restaurant {

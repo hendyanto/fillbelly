@@ -19,7 +19,8 @@ func createRestaurantFactory(r Restaurant) Restaurant {
 		Latitude: r.Latitude,
 		Id_category: r.Id_category,
 	}
-	InsertNewRestaurant(data)
+	id := InsertNewRestaurant(data)
+	data.Id = id
 
 	return data
 }
