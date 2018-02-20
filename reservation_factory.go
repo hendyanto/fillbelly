@@ -2,7 +2,6 @@ package main
 import (
 	"github.com/icrowley/fake"
 	"time"
-	"fmt"
   )
 
 func createReservationFactory(r Reservation) Reservation {
@@ -20,7 +19,6 @@ func createReservationFactory(r Reservation) Reservation {
 	if(r.created != beginningOfTime) {
 		created = r.created
 	}
-	fmt.Printf("Restaurant ID: %d", r.id_restaurant)
 	data := Reservation{
 		name: name,
 		id_restaurant: r.id_restaurant,

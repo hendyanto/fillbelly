@@ -26,3 +26,28 @@ func InsertNewReservation(r Reservation) int {
 
 	return id
 }
+
+func getLatestReservation() Reservation {
+	var result Reservation
+	db, err := sql.Open("postgres", DbConnectionString());
+	if err != nil {
+		fmt.Println("pq error: ?", err)
+	} else {
+		r := Reservation {}
+		rows, err_sql := db.Query("SELECT reservations.* FROM reservations ORDER BY id DESC LIMIT 1;")
+
+		if err_sql != nil {
+			fmt.Println("Query Error: ?", err_sql)
+		} else {
+			rows.Next()
+			rows.Scan(&r.id, &r.name, &r.id_restaurant, &r.date, &r.created)
+			result = Reservation {
+				name: r.name,
+				id_restaurant: r.id_restaurant,
+				date: r.date,
+				created: r.created,
+			}
+		}
+	}
+	return result
+}

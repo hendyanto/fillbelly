@@ -7,6 +7,7 @@ import (
 	"net"
 	"strconv"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -23,6 +24,24 @@ func main() {
 			w.WriteHeader(200)
 			fmt.Printf("\nLatitude: %s\nLongitude: %s\n", latitude[0], longitude[0])
 			w.Write(getNearby(latitude[0], longitude[0]))
+		}
+	})
+
+	sm.HandleFunc("/reserve", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == "POST" {
+			r.ParseForm()
+			name, namePresent := r.Form["name"]
+			idRestaurant, idPresent := r.Form["id_restaurant"]
+			date, datePresent := r.Form["date"]
+
+			if namePresent && idPresent && datePresent {
+				parsedDate, _ := time.Parse("2006-01-02T15:04:05Z", date[0])
+				w.WriteHeader(200)
+				converted, _ := strconv.Atoi(idRestaurant[0])
+				reserve(name[0], converted, parsedDate)
+			} else {
+				w.WriteHeader(400)
+			}
 		}
 	})
 	

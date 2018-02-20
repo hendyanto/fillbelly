@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 	"testing"
 	"database/sql"
 	"os"
@@ -136,6 +137,27 @@ func TestRestaurantLocator(t *testing.T) {
 	}
 	if !matched {
 		t.Errorf("Restaurant %s should be included.", restaurant.Name);
+	}
+}
+
+func TestReservationCreation(t *testing.T) {
+	if(!isEnvTest()) { return }
+	ResetDB()
+	name := "Mokofiii"
+	restaurant := createRestaurantFactory(Restaurant{})
+	date := time.Now()
+	reserve(name, restaurant.Id, date)
+
+	latest := getLatestReservation()
+	if(latest.id_restaurant != restaurant.Id){
+		t.Error("Restaurant mismatched")
+	}
+	if(latest.name != name){
+		t.Error("Name mismatched")
+	}
+
+	if(latest.date.Format(time.ANSIC) != date.Format(time.ANSIC)){
+		t.Error("Date mismatched")
 	}
 }
 
