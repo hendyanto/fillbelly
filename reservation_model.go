@@ -20,6 +20,7 @@ func InsertNewReservation(r Reservation) int {
 	quoted := pq.QuoteIdentifier("reservations")
 	var id int
 	err := db.QueryRow(fmt.Sprintf("INSERT INTO %s (name, id_restaurant, date, created) VALUES ($1, $2, $3, $4) RETURNING id", quoted), r.name, r.id_restaurant, r.date, r.created).Scan(&id)
+	db.Close()
 	if err != nil {
 		fmt.Printf("Error: ", err)
 	}

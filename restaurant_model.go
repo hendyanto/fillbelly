@@ -21,6 +21,7 @@ func InsertNewRestaurant(r Restaurant) int {
 	db, _ := sql.Open("postgres", DbConnectionString());
 	quoted := pq.QuoteIdentifier("restaurants")
 	err := db.QueryRow(fmt.Sprintf("INSERT INTO %s (name,rating,longitude,latitude,id_category) VALUES ($1, $2, $3, $4, $5) RETURNING id", quoted), r.Name, r.Rating, r.Longitude, r.Latitude, r.Id_category).Scan(&id)
+	db.Close()
 	if err != nil {
 		fmt.Printf("Error: ", err)
 	}
@@ -37,6 +38,7 @@ func GetAllRestaurant() []Restaurant {
 		fmt.Println("pq error: ?", err)
 	} else {
 		rows, err_sql := db.Query("SELECT restaurants.*, categories.name AS category_name FROM restaurants INNER JOIN categories on restaurants.id_category = categories.id;")
+		db.Close()
 
 		if err_sql != nil {
 			fmt.Println("Query Error: ?", err_sql)

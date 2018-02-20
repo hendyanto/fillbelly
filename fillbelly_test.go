@@ -108,6 +108,12 @@ func TestRestaurantLocator(t *testing.T) {
 		Id_category: category.id,
 	})
 
+	sum := 1
+	for sum < 100 {
+		createRestaurantFactory(Restaurant{})
+		sum += 1
+	}
+
 	farRestaurantLatitude := -6.174722
 	farRestaurantLongitude := 106.7903383
 
@@ -138,6 +144,27 @@ func TestRestaurantLocator(t *testing.T) {
 	if !matched {
 		t.Errorf("Restaurant %s should be included.", restaurant.Name);
 	}
+}
+func BenchmarkHello(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        fmt.Sprintf("hello")
+    }
+}
+
+func BenchmarkLocator(b *testing.B) {
+	sum := 1
+	for sum < 10000 {
+		createRestaurantFactory(Restaurant{})
+		sum += 1
+	}
+	b.ResetTimer()
+	
+	latitude := -6.115734
+	longitude := 106.7916073
+
+	for i := 0; i < b.N; i++ {
+		getNearbyRestaurants(latitude, longitude)
+    }
 }
 
 func TestReservationCreation(t *testing.T) {
