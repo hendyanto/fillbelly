@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"encoding/json"
 	"net"
@@ -35,7 +34,7 @@ func ReserveHandler(w http.ResponseWriter, r *http.Request) {
 		idRestaurant, idPresent := r.Form["id_restaurant"]
 		date, datePresent := r.Form["date"]
 
-		if namePresent && idPresent && datePresent {
+		if namePresent && idPresent && datePresent && name[0] != "" && idRestaurant[0] != "" && date[0] != "" {
 			parsedDate, _ := time.Parse("2006-01-02T15:04:05Z", date[0])
 			w.WriteHeader(200)
 			converted, _ := strconv.Atoi(idRestaurant[0])
@@ -51,8 +50,9 @@ func NearbyHandler(w http.ResponseWriter, r *http.Request) {
 	longitude, longitudePresent := r.URL.Query()["longitude"]
 	if latitudePresent && longitudePresent {
 		w.WriteHeader(200)
-		fmt.Printf("\nLatitude: %s\nLongitude: %s\n", latitude[0], longitude[0])
 		w.Write(getNearby(latitude[0], longitude[0]))
+	} else {
+		w.WriteHeader(400)
 	}
 }
 
