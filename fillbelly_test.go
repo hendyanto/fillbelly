@@ -145,17 +145,15 @@ func TestRestaurantLocator(t *testing.T) {
 		t.Errorf("Restaurant %s should be included.", restaurant.Name);
 	}
 }
-func BenchmarkHello(b *testing.B) {
-    for i := 0; i < b.N; i++ {
-        fmt.Sprintf("hello")
-    }
-}
 
 func BenchmarkLocator(b *testing.B) {
 	sum := 1
 	for sum < 10000 {
 		createRestaurantFactory(Restaurant{})
 		sum += 1
+		if sum % 100 == 0 {
+			fmt.Printf("\nResturant count: %d", sum)
+		}
 	}
 	b.ResetTimer()
 	
