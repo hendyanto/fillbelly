@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"encoding/json"
 	"net"
@@ -10,6 +11,15 @@ import (
 )
 
 func main() {
+	fmt.Print("Starting HTTP Server\n");
+	fmt.Print(`:::::::::: ::::::::::: :::        :::        :::::::::  :::::::::: :::        :::        :::   ::: 
+:+:            :+:     :+:        :+:        :+:    :+: :+:        :+:        :+:        :+:   :+: 
++:+            +:+     +:+        +:+        +:+    +:+ +:+        +:+        +:+         +:+ +:+  
+:#::+::#       +#+     +#+        +#+        +#++:++#+  +#++:++#   +#+        +#+          +#++:   
++#+            +#+     +#+        +#+        +#+    +#+ +#+        +#+        +#+           +#+    
+#+#            #+#     #+#        #+#        #+#    #+# #+#        #+#        #+#           #+#    
+###        ########### ########## ########## #########  ########## ########## ##########    ###    `)
+	fmt.Print("\n")
 	sm := http.NewServeMux()
 	sm.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
@@ -28,6 +38,7 @@ func main() {
 }
 
 func ReserveHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("\n POST /reserve")
 	if r.Method == "POST" {
 		r.ParseForm()
 		name, namePresent := r.Form["name"]
@@ -46,6 +57,7 @@ func ReserveHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func NearbyHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("\n GET /nearby")
 	latitude, latitudePresent := r.URL.Query()["latitude"]
 	longitude, longitudePresent := r.URL.Query()["longitude"]
 	if latitudePresent && longitudePresent {
