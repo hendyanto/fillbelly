@@ -48,3 +48,25 @@ Get restaurants 5 KM from location
    }
 ]
 ```
+## Reservation
+
+Reserve a restaurant
+
+**URL** : `/reserve`
+
+**Method** : `POST`
+
+**Params** : 
+```
+date: 2011-01-02T22:04:05Z
+id_restaurant: 12
+name: Batman
+```
+
+**Auth required** : None
+
+**Permissions required** : None
+
+## Success Response
+
+**Code** : `200 OK`
