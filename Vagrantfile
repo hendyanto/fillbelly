@@ -14,7 +14,8 @@ Vagrant.configure("2") do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/trusty64"
   config.vm.synced_folder ".", "/home/vagrant/go/src/fillbelly"
-  config.vm.network "private_network", type: "dhcp"
+  config.vm.network "private_network", type: "dhcp", ip: "10.10.10.1"
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provision/playbook.yml"

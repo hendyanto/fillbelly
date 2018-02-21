@@ -19,6 +19,10 @@ func main() {
 +#+            +#+     +#+        +#+        +#+    +#+ +#+        +#+        +#+           +#+    
 #+#            #+#     #+#        #+#        #+#    #+# #+#        #+#        #+#           #+#    
 ###        ########### ########## ########## #########  ########## ########## ##########    ###    `)
+
+	fmt.Print("\n\n\n Example Endpoint: GET http://10.10.10.1:8080/nearby?latitude=-6.115734&longitude=106.7916073")
+	fmt.Print("\n Example Endpoint: POST http://10.10.10.1:8080/reserve")
+
 	fmt.Print("\n")
 	sm := http.NewServeMux()
 	sm.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
