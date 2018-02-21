@@ -9,6 +9,24 @@
     chdir: /tmp
   become: true
 
+- name: Create go home directory
+  file:
+    path: /home/vagrant/go
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+  become: true
+
+- name: Create go home directory
+  file:
+    path: /home/vagrant/go/src
+    state: directory
+    owner: vagrant
+    group: vagrant
+    mode: 0755
+  become: true
+
 - name: Update bashrc
   lineinfile:
     path: /home/vagrant/.bashrc
