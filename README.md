@@ -19,6 +19,8 @@ run `GO_ENV=test go test -v`
 run `GO_ENV=test go test -v -bench=.`
 
 # API
+vagrant default ip is `10.10.10.1` and default app port is `8080`
+
 ## Nearby
 
 Get restaurants 5 KM from location
