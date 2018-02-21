@@ -2,6 +2,12 @@
 
 ### Setup
 run `vagrant up`
+run `vagrant ssh`
+
+Inside vagrant
+run `go get ./...`
+run `go build`
+run `./fillbelly` to start the webserver
 
 ### Testing (inside vagrant)
 run `GO_ENV=test go test -v`
