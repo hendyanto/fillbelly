@@ -1,0 +1,9 @@
+- name: Copy Schema
+  template:
+    src: schema.dump
+    dest: /tmp/schema
+
+- name: Restore database
+  shell: psql -d go_database -f /tmp/schema
+  become_user: 'postgres'
+  become: true

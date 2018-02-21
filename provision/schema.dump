@@ -1,0 +1,2239 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE categories (
+    id integer NOT NULL,
+    name character varying(200)
+);
+
+
+ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_id_seq OWNER TO postgres;
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+
+
+--
+-- Name: reservations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE reservations (
+    id integer NOT NULL,
+    name character varying(200),
+    id_restaurant integer,
+    date timestamp without time zone,
+    created timestamp without time zone
+);
+
+
+ALTER TABLE public.reservations OWNER TO postgres;
+
+--
+-- Name: reservations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE reservations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.reservations_id_seq OWNER TO postgres;
+
+--
+-- Name: reservations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE reservations_id_seq OWNED BY reservations.id;
+
+
+--
+-- Name: restaurants; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE restaurants (
+    id integer NOT NULL,
+    name character varying(200),
+    rating integer,
+    longitude double precision,
+    latitude double precision,
+    id_category integer
+);
+
+
+ALTER TABLE public.restaurants OWNER TO postgres;
+
+--
+-- Name: restaurants_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE restaurants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restaurants_id_seq OWNER TO postgres;
+
+--
+-- Name: restaurants_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE restaurants_id_seq OWNED BY restaurants.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY reservations ALTER COLUMN id SET DEFAULT nextval('reservations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY restaurants ALTER COLUMN id SET DEFAULT nextval('restaurants_id_seq'::regclass);
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY categories (id, name) FROM stdin;
+1	Recreational Goods, Other
+2	Information Technology Services
+3	Catalog & Mail Order Houses
+4	Farm & Construction Machinery
+5	Asset Management
+6	Diversified Computer Systems
+7	Application Software
+8	Data Storage Devices
+9	Education & Training Services
+10	Entertainment - Diversified
+11	Diagnostic Substances
+12	Computers Wholesale
+13	Multimedia & Graphics Software
+14	Data Storage Devices
+15	Security Software & Services
+16	Agricultural Chemicals
+17	Oil & Gas Refining & Marketing
+18	Asset Management
+19	Gold
+20	Drug Delivery
+21	Diversified Computer Systems
+22	Small Tools & Accessories
+23	Electronics Wholesale
+24	Auto Parts
+25	Data Storage Devices
+26	Broadcasting - Radio
+27	Auto Parts Stores
+28	Department Stores
+29	Medical Practitioners
+30	Air Delivery & Freight Services
+31	Property & Casualty Insurance
+32	Specialized Health Services
+33	Drug Manufacturers - Major
+34	Diversified Investments
+35	Oil & Gas Refining & Marketing
+36	Home Health Care
+37	REIT - Industrial
+38	Regional - Pacific Banks
+39	Entertainment - Diversified
+40	Conglomerates
+41	Home Health Care
+42	Home Health Care
+43	Waste Management
+44	Lodging
+45	Mortgage Investment
+46	Property & Casualty Insurance
+47	Gas Utilities
+48	Semiconductor Equipment & Materials
+49	Food - Major Diversified
+50	Major Integrated Oil & Gas
+51	Oil & Gas Pipelines
+52	Business Services
+53	Home Furnishing Stores
+54	Oil & Gas Pipelines
+55	Appliances
+56	Air Delivery & Freight Services
+57	Closed-End Fund - Debt
+58	REIT - Retail
+59	Oil & Gas Drilling & Exploration
+60	REIT - Diversified
+61	Regional - Pacific Banks
+62	Broadcasting - TV
+63	Trucks & Other Vehicles
+64	Semiconductor Equipment & Materials
+65	Jewelry Stores
+66	Appliances
+67	Paper & Paper Products
+68	Textile - Apparel Footwear & Accessories
+69	Rubber & Plastics
+70	Information Technology Services
+71	Drug Manufacturers - Other
+72	Medical Laboratories & Research
+73	Healthcare
+74	Medical Instruments & Supplies
+75	Industrial Goods
+76	Closed-End Fund - Foreign
+77	Surety & Title Insurance
+78	Internet Service Providers
+79	Information Technology Services
+80	Sporting Goods Stores
+81	Security Software & Services
+82	Farm & Construction Machinery
+83	Foreign Money Center Banks
+84	Textile - Apparel Footwear & Accessories
+85	Closed-End Fund - Foreign
+86	Security & Protection Services
+87	Closed-End Fund - Equity
+88	Consumer Goods
+89	Research Services
+90	Information & Delivery Services
+91	Beverages - Soft Drinks
+92	Major Airlines
+93	Biotechnology
+94	Confectioners
+95	Synthetics
+96	Semiconductor - Specialized
+97	Specialty Eateries
+98	Processed & Packaged Goods
+99	Hospitals
+100	Regional Airlines
+101	Apparel Stores
+102	Semiconductor - Specialized
+103	Long-Term Care Facilities
+104	Auto Parts Stores
+105	Property & Casualty Insurance
+106	Dairy Products
+107	Food Wholesale
+108	Semiconductor Equipment & Materials
+109	Packaging & Containers
+110	Auto Dealerships
+111	Conglomerates
+112	Computer Based Systems
+113	Semiconductor - Specialized
+114	Sporting Goods Stores
+115	Technical & System Software
+116	Computers Wholesale
+117	REIT - Diversified
+118	Textile - Apparel Clothing
+119	Wholesale, Other
+120	Internet Software & Services
+121	Auto Manufacturers - Major
+122	Silver
+123	Recreational Goods, Other
+124	Technical & System Software
+125	Discount, Variety Stores
+126	Electric Utilities
+127	Aluminum
+128	Auto Parts
+129	Publishing - Newspapers
+130	REIT - Diversified
+131	Staffing & Outsourcing Services
+132	Aerospace/Defense - Major Diversified
+133	Auto Parts
+134	Property & Casualty Insurance
+135	Broadcasting - Radio
+136	Electronics Wholesale
+137	Wireless Communications
+138	Data Storage Devices
+139	Drug Related Products
+140	Auto Manufacturers - Major
+141	Broadcasting - Radio
+142	Long-Term Care Facilities
+143	Semiconductor - Specialized
+144	Office Supplies
+145	Toys & Games
+146	Application Software
+147	REIT - Retail
+148	Machine Tools & Accessories
+149	Housewares & Accessories
+150	Semiconductor - Broad Line
+151	Processing Systems & Products
+152	Discount, Variety Stores
+153	Resorts & Casinos
+154	Recreational Vehicles
+155	Printed Circuit Boards
+156	Nonmetallic Mineral Mining
+157	Staffing & Outsourcing Services
+158	Consumer Goods
+159	Photographic Equipment & Supplies
+160	Paper & Paper Products
+161	Semiconductor - Specialized
+162	Sporting Activities
+163	Tobacco Products, Other
+164	Toys & Games
+165	Aerospace/Defense - Major Diversified
+166	Home Furnishing Stores
+167	Publishing - Books
+168	Industrial Equipment Wholesale
+169	Medical Practitioners
+170	Semiconductor- Memory Chips
+171	Regional - Pacific Banks
+172	Photographic Equipment & Supplies
+173	Drug Manufacturers - Other
+174	Electronics Stores
+175	Major Integrated Oil & Gas
+176	Accident & Health Insurance
+177	Semiconductor- Memory Chips
+178	Synthetics
+179	Diversified Electronics
+180	Industrial Goods
+181	Healthcare
+182	Shipping
+183	Beverages - Brewers
+184	Sporting Activities
+185	Multimedia & Graphics Software
+186	REIT - Retail
+187	Credit Services
+188	Rubber & Plastics
+189	Scientific & Technical Instruments
+190	Industrial Equipment Wholesale
+191	Electric Utilities
+192	Beverages - Wineries & Distillers
+193	Metal Fabrication
+194	Cement
+195	Cigarettes
+196	Drugs Wholesale
+197	Oil & Gas Pipelines
+198	Healthcare
+199	Publishing - Newspapers
+200	Auto Manufacturers - Major
+201	Computer Peripherals
+202	Research Services
+203	Property Management
+204	Diversified Investments
+205	Medical Equipment Wholesale
+206	Aerospace/Defense - Major Diversified
+207	Recreational Vehicles
+208	Marketing Services
+209	Nonmetallic Mineral Mining
+210	Home Furnishing Stores
+211	Paper & Paper Products
+212	Publishing - Books
+213	Food Wholesale
+214	Foreign Money Center Banks
+215	Internet Service Providers
+216	Biotechnology
+217	Medical Laboratories & Research
+218	Security & Protection Services
+219	Resorts & Casinos
+220	Insurance Brokers
+221	Photographic Equipment & Supplies
+222	Dairy Products
+223	Diversified Electronics
+224	Asset Management
+225	Security Software & Services
+226	Food Wholesale
+227	Sporting Goods
+228	Oil & Gas Equipment & Services
+229	Agricultural Chemicals
+230	Security & Protection Services
+231	Diagnostic Substances
+232	Mortgage Investment
+233	Regional - Mid-Atlantic Banks
+234	Textile Industrial
+235	Department Stores
+236	Wholesale, Other
+237	Tobacco Products, Other
+238	Communication Equipment
+239	Telecom Services - Foreign
+240	Home Improvement Stores
+241	Savings & Loans
+242	Textile Industrial
+243	Tobacco Products, Other
+244	Metal Fabrication
+245	Machine Tools & Accessories
+246	Multimedia & Graphics Software
+247	Catalog & Mail Order Houses
+248	Office Supplies
+249	Rental & Leasing Services
+250	Movie Production, Theaters
+251	Electronics Wholesale
+252	REIT - Residential
+253	Medical Equipment Wholesale
+254	Biotechnology
+255	Electronic Equipment
+256	Medical Appliances & Equipment
+257	Wireless Communications
+258	Recreational Goods, Other
+259	Oil & Gas Refining & Marketing
+260	Personal Computers
+261	Entertainment - Diversified
+262	Medical Appliances & Equipment
+263	General Contractors
+264	Hospitals
+265	Semiconductor - Integrated Circuits
+266	Lodging
+267	Diversified Investments
+268	Life Insurance
+269	REIT - Industrial
+270	Heavy Construction
+271	Technology
+272	Regional - Mid-Atlantic Banks
+273	Property Management
+274	Copper
+275	Photographic Equipment & Supplies
+276	Beverages - Wineries & Distillers
+277	Regional - Southeast Banks
+278	Personal Computers
+279	Electronics Stores
+280	Internet Service Providers
+281	Small Tools & Accessories
+282	Oil & Gas Drilling & Exploration
+283	Movie Production, Theaters
+284	Computers Wholesale
+285	Industrial Equipment Wholesale
+286	Electronics Wholesale
+287	Restaurants
+288	Recreational Vehicles
+289	Confectioners
+290	Computer Peripherals
+291	Long Distance Carriers
+292	Dairy Products
+293	Medical Equipment Wholesale
+294	Accident & Health Insurance
+295	Personal Products
+296	Regional Airlines
+297	Industrial Equipment & Components
+298	General Contractors
+299	Conglomerates
+300	Healthcare
+301	Basic Materials Wholesale
+302	Toy & Hobby Stores
+303	Drug Stores
+304	Confectioners
+305	Staffing & Outsourcing Services
+306	Auto Parts Wholesale
+307	Drug Delivery
+308	Regional - Southwest Banks
+309	Steel & Iron
+310	Conglomerates
+311	Tobacco Products, Other
+312	Packaging & Containers
+313	REIT - Diversified
+314	Medical Practitioners
+315	Industrial Equipment & Components
+316	Medical Practitioners
+317	Medical Equipment Wholesale
+318	Aerospace/Defense Products & Services
+319	Consumer Services
+320	Movie Production, Theaters
+321	Farm Products
+322	Diversified Computer Systems
+323	Tobacco Products, Other
+324	Recreational Goods, Other
+325	Cleaning Products
+326	Textile - Apparel Clothing
+327	Farm Products
+328	Catalog & Mail Order Houses
+329	Credit Services
+330	Medical Laboratories & Research
+331	Trucking
+332	Accident & Health Insurance
+333	Oil & Gas Pipelines
+334	Specialty Retail, Other
+335	Residential Construction
+336	Home Health Care
+337	Management Services
+338	Life Insurance
+339	Business Services
+340	Farm & Construction Machinery
+341	Beverages - Brewers
+342	Medical Equipment Wholesale
+343	Building Materials Wholesale
+344	Home Furnishing Stores
+345	Multimedia & Graphics Software
+346	Conglomerates
+347	Drug Manufacturers - Major
+348	Industrial Equipment & Components
+349	Consumer Services
+350	Marketing Services
+351	Auto Manufacturers - Major
+352	Staffing & Outsourcing Services
+353	Hospitals
+354	Industrial Goods
+355	Rubber & Plastics
+356	Life Insurance
+357	Property Management
+358	Specialty Eateries
+359	Education & Training Services
+360	Electric Utilities
+361	Water Utilities
+362	Closed-End Fund - Debt
+363	Aerospace/Defense Products & Services
+364	Management Services
+365	Medical Instruments & Supplies
+366	Technical & System Software
+367	Auto Parts
+368	Computer Based Systems
+369	Music & Video Stores
+370	Hospitals
+371	Textile - Apparel Clothing
+372	Electronics Wholesale
+373	Investment Brokerage - National
+374	Home Improvement Stores
+375	Advertising Agencies
+376	Scientific & Technical Instruments
+377	Shipping
+378	Toys & Games
+379	Aerospace/Defense Products & Services
+380	Restaurants
+381	Medical Laboratories & Research
+382	Surety & Title Insurance
+383	Publishing - Books
+384	Multimedia & Graphics Software
+385	Beverages - Soft Drinks
+386	Jewelry Stores
+387	Publishing - Books
+388	Oil & Gas Drilling & Exploration
+389	Management Services
+390	Building Materials Wholesale
+391	Restaurants
+392	Steel & Iron
+393	Diversified Computer Systems
+394	Small Tools & Accessories
+395	Personal Services
+396	Broadcasting - Radio
+397	Health Care Plans
+398	Biotechnology
+399	Industrial Electrical Equipment
+400	Telecom Services - Domestic
+401	Medical Practitioners
+402	Medical Laboratories & Research
+403	Beverages - Soft Drinks
+404	Department Stores
+405	Medical Equipment Wholesale
+406	Auto Manufacturers - Major
+407	Communication Equipment
+408	Entertainment - Diversified
+409	Publishing - Newspapers
+410	Business Equipment
+411	Publishing - Newspapers
+412	Long Distance Carriers
+413	Textile - Apparel Clothing
+414	Beverages - Soft Drinks
+415	Telecom Services - Foreign
+416	Beverages - Wineries & Distillers
+417	Diversified Utilities
+418	Foreign Utilities
+419	CATV Systems
+420	Diversified Communication Services
+421	Drug Related Products
+422	Lodging
+423	Management Services
+424	Industrial Goods
+425	Farm & Construction Machinery
+426	Closed-End Fund - Debt
+427	REIT - Office
+428	Sporting Goods
+429	Savings & Loans
+430	Telecom Services - Foreign
+431	Medical Instruments & Supplies
+432	Industrial Electrical Equipment
+433	Printed Circuit Boards
+434	Life Insurance
+435	Insurance Brokers
+436	Wholesale, Other
+437	Drug Stores
+438	Rental & Leasing Services
+439	Medical Practitioners
+440	Healthcare
+441	Copper
+442	Publishing - Books
+443	Property Management
+444	Processed & Packaged Goods
+445	Internet Software & Services
+446	Telecom Services - Domestic
+447	Beverages - Soft Drinks
+448	Broadcasting - TV
+449	General Contractors
+450	Farm & Construction Machinery
+451	Home Improvement Stores
+452	Residential Construction
+453	REIT - Retail
+454	Auto Parts
+455	Paper & Paper Products
+456	Industrial Goods
+457	Surety & Title Insurance
+458	Department Stores
+459	Conglomerates
+460	Textile - Apparel Footwear & Accessories
+461	Toys & Games
+462	Farm & Construction Machinery
+463	Research Services
+464	Medical Instruments & Supplies
+465	Music & Video Stores
+466	Department Stores
+467	General Contractors
+468	Grocery Stores
+469	Aerospace/Defense - Major Diversified
+470	Healthcare
+471	Steel & Iron
+472	Drug Delivery
+473	Security & Protection Services
+474	Manufactured Housing
+475	Investment Brokerage - Regional
+476	Security & Protection Services
+477	Packaging & Containers
+478	Multimedia & Graphics Software
+479	REIT - Office
+480	Computer Based Systems
+481	Oil & Gas Drilling & Exploration
+482	Closed-End Fund - Debt
+483	Department Stores
+484	Foreign Utilities
+485	Aluminum
+486	Application Software
+487	Drug Stores
+488	Major Integrated Oil & Gas
+489	General Contractors
+490	Photographic Equipment & Supplies
+491	Telecom Services - Foreign
+492	General Entertainment
+493	Electronics Wholesale
+494	Healthcare Information Services
+495	Property & Casualty Insurance
+496	Synthetics
+497	Diversified Communication Services
+498	Medical Equipment Wholesale
+499	Farm Products
+500	CATV Systems
+501	Major Airlines
+502	Telecom Services - Foreign
+503	Data Storage Devices
+504	Electric Utilities
+505	Specialty Retail, Other
+506	Asset Management
+507	Food Wholesale
+508	Property Management
+509	Oil & Gas Pipelines
+510	Trucks & Other Vehicles
+511	Industrial Metals & Minerals
+512	Catalog & Mail Order Houses
+513	Basic Materials
+514	Regional - Southwest Banks
+515	Specialty Retail, Other
+516	Investment Brokerage - National
+517	Machine Tools & Accessories
+518	Catalog & Mail Order Houses
+519	Regional - Midwest Banks
+520	Semiconductor - Broad Line
+521	Diversified Electronics
+522	REIT - Residential
+523	REIT - Healthcare Facilities
+524	Semiconductor - Specialized
+525	Aluminum
+526	Financial
+527	Personal Services
+528	Auto Parts Wholesale
+529	Property Management
+530	Discount, Variety Stores
+531	Medical Equipment Wholesale
+532	Processing Systems & Products
+533	Computers Wholesale
+534	Technology
+535	General Entertainment
+536	Packaging & Containers
+537	Textile Industrial
+538	Electric Utilities
+539	Drug Stores
+540	Publishing - Newspapers
+541	Specialty Retail, Other
+542	Oil & Gas Pipelines
+543	Drugs Wholesale
+544	Jewelry Stores
+545	REIT - Office
+546	Air Delivery & Freight Services
+547	Foreign Utilities
+548	Pollution & Treatment Controls
+549	Publishing - Periodicals
+550	Diversified Communication Services
+551	Regional - Southeast Banks
+552	Gaming Activities
+553	Internet Information Providers
+554	Education & Training Services
+555	Water Utilities
+556	Food - Major Diversified
+557	REIT - Retail
+558	Savings & Loans
+559	Auto Parts Stores
+560	Medical Equipment Wholesale
+561	Accident & Health Insurance
+562	Networking & Communication Devices
+563	Semiconductor Equipment & Materials
+564	Business Equipment
+565	Aerospace/Defense Products & Services
+566	Appliances
+567	Electronics Wholesale
+568	Beverages - Brewers
+569	Beverages - Soft Drinks
+570	Personal Computers
+571	General Entertainment
+572	Manufactured Housing
+573	Communication Equipment
+574	Regional - Southeast Banks
+575	Healthcare Information Services
+576	Food - Major Diversified
+577	Investment Brokerage - Regional
+578	Foreign Money Center Banks
+579	Printed Circuit Boards
+580	Beverages - Wineries & Distillers
+581	Major Integrated Oil & Gas
+582	Cleaning Products
+583	Textile - Apparel Footwear & Accessories
+584	Railroads
+585	Gold
+586	Chemicals - Major Diversified
+587	Hospitals
+588	Appliances
+589	Basic Materials Wholesale
+590	Semiconductor Equipment & Materials
+591	Medical Appliances & Equipment
+592	Consumer Services
+593	Silver
+594	Property Management
+595	Industrial Goods
+596	Semiconductor - Specialized
+597	Electric Utilities
+598	Conglomerates
+599	Entertainment - Diversified
+600	Packaging & Containers
+601	Confectioners
+602	Research Services
+603	Beverages - Wineries & Distillers
+604	Mortgage Investment
+605	Cleaning Products
+606	Pollution & Treatment Controls
+607	Technical & System Software
+608	Copper
+609	Copper
+610	Business Software & Services
+611	Department Stores
+612	Copper
+613	Jewelry Stores
+614	Machine Tools & Accessories
+615	Medical Instruments & Supplies
+616	Conglomerates
+617	Computers Wholesale
+618	Gas Utilities
+619	Trucks & Other Vehicles
+620	Industrial Goods
+621	Internet Software & Services
+622	Railroads
+623	Electronics Stores
+624	Independent Oil & Gas
+625	Business Software & Services
+626	Diagnostic Substances
+627	Personal Products
+628	Shipping
+629	Recreational Goods, Other
+630	REIT - Hotel/Motel
+631	Computer Peripherals
+632	REIT - Residential
+633	Consumer Goods
+634	Manufactured Housing
+635	Foreign Utilities
+636	Trucking
+637	Appliances
+638	Processing Systems & Products
+639	Food - Major Diversified
+640	Accident & Health Insurance
+641	Specialty Retail, Other
+642	Security & Protection Services
+643	Consumer Goods
+644	Internet Software & Services
+645	Industrial Metals & Minerals
+646	Closed-End Fund - Equity
+647	Electronics Wholesale
+648	Internet Information Providers
+649	Toy & Hobby Stores
+650	Specialty Retail, Other
+651	CATV Systems
+652	Regional - Mid-Atlantic Banks
+653	Internet Software & Services
+654	Auto Manufacturers - Major
+655	Office Supplies
+656	Biotechnology
+657	Communication Equipment
+658	Internet Information Providers
+659	Computer Based Systems
+660	Cigarettes
+661	Independent Oil & Gas
+662	Photographic Equipment & Supplies
+663	Biotechnology
+664	Property Management
+665	Multimedia & Graphics Software
+666	Confectioners
+667	CATV Systems
+668	Real Estate Development
+669	Personal Products
+670	Synthetics
+671	Security & Protection Services
+672	Water Utilities
+673	Publishing - Periodicals
+674	Technical & System Software
+675	Regional - Southwest Banks
+676	Aerospace/Defense Products & Services
+677	Data Storage Devices
+678	Printed Circuit Boards
+679	Photographic Equipment & Supplies
+680	Textile - Apparel Footwear & Accessories
+681	Diversified Utilities
+682	Restaurants
+683	Jewelry Stores
+684	Healthcare Information Services
+685	Entertainment - Diversified
+686	Lumber, Wood Production
+687	Medical Appliances & Equipment
+688	Regional Airlines
+689	Foreign Utilities
+690	Business Services
+691	Internet Service Providers
+692	Foreign Money Center Banks
+693	Specialty Eateries
+694	Trucks & Other Vehicles
+695	Catalog & Mail Order Houses
+696	Semiconductor - Integrated Circuits
+697	Toy & Hobby Stores
+698	Conglomerates
+699	Cleaning Products
+700	Resorts & Casinos
+701	Printed Circuit Boards
+702	Investment Brokerage - National
+703	Personal Computers
+704	Shipping
+705	Consumer Goods
+706	Regional Airlines
+707	Property Management
+708	Drugs Wholesale
+709	REIT - Residential
+710	Research Services
+711	Staffing & Outsourcing Services
+712	Industrial Goods
+713	Asset Management
+714	Electronic Equipment
+715	Specialty Eateries
+716	Industrial Metals & Minerals
+717	Lodging
+718	Publishing - Books
+719	Staffing & Outsourcing Services
+720	Medical Appliances & Equipment
+721	Business Software & Services
+722	Financial
+723	REIT - Hotel/Motel
+724	Diagnostic Substances
+725	Property Management
+726	Advertising Agencies
+727	Auto Parts Wholesale
+728	Regional - Southwest Banks
+729	Semiconductor - Integrated Circuits
+730	Specialty Chemicals
+731	Food - Major Diversified
+732	Computer Based Systems
+733	Management Services
+734	Industrial Electrical Equipment
+735	Computers Wholesale
+736	Savings & Loans
+737	Business Software & Services
+738	Financial
+739	Healthcare
+740	Insurance Brokers
+741	Machine Tools & Accessories
+742	Wholesale, Other
+743	Money Center Banks
+744	Sporting Goods Stores
+745	Drug Delivery
+746	Water Utilities
+747	Publishing - Periodicals
+748	Personal Products
+749	Toy & Hobby Stores
+750	Telecom Services - Foreign
+751	Electric Utilities
+752	Farm Products
+753	Shipping
+754	Independent Oil & Gas
+755	Home Furnishing Stores
+756	Regional - Mid-Atlantic Banks
+757	Industrial Equipment Wholesale
+758	General Entertainment
+759	Asset Management
+760	Semiconductor - Integrated Circuits
+761	Information & Delivery Services
+762	General Entertainment
+763	Specialty Chemicals
+764	Internet Service Providers
+765	Auto Manufacturers - Major
+766	Regional - Southwest Banks
+767	Management Services
+768	Meat Products
+769	Sporting Activities
+770	Conglomerates
+771	Publishing - Newspapers
+772	Application Software
+773	Medical Laboratories & Research
+774	Healthcare
+775	Foreign Regional Banks
+776	Agricultural Chemicals
+777	Computer Based Systems
+778	REIT - Industrial
+779	Shipping
+780	Textile - Apparel Clothing
+781	Medical Appliances & Equipment
+782	Foreign Utilities
+783	Computer Based Systems
+784	REIT - Retail
+785	Farm & Construction Machinery
+786	Specialty Retail, Other
+787	Internet Software & Services
+788	Mortgage Investment
+789	Publishing - Newspapers
+790	Discount, Variety Stores
+791	Farm Products
+792	Textile Industrial
+793	Movie Production, Theaters
+794	Home Furnishings & Fixtures
+795	REIT - Office
+796	Industrial Equipment & Components
+797	Electronics Stores
+798	Manufactured Housing
+799	Tobacco Products, Other
+800	Shipping
+801	Lodging
+802	Processing Systems & Products
+803	General Entertainment
+804	Wholesale, Other
+805	Railroads
+806	Textile - Apparel Clothing
+807	Trucks & Other Vehicles
+808	Home Improvement Stores
+809	Property Management
+810	Technical Services
+811	Computer Peripherals
+812	Closed-End Fund - Equity
+813	Networking & Communication Devices
+814	Information & Delivery Services
+815	Research Services
+816	Computers Wholesale
+817	Medical Appliances & Equipment
+818	Diversified Electronics
+819	Tobacco Products, Other
+820	Machine Tools & Accessories
+821	General Entertainment
+822	Department Stores
+823	Diversified Machinery
+824	Semiconductor - Specialized
+825	Medical Practitioners
+826	Beverages - Brewers
+827	Residential Construction
+828	Information & Delivery Services
+829	Information Technology Services
+830	Steel & Iron
+831	Specialty Chemicals
+832	Dairy Products
+833	Processing Systems & Products
+834	Home Improvement Stores
+835	Regional Airlines
+836	Information Technology Services
+837	Financial
+838	Regional Airlines
+839	Specialty Retail, Other
+840	Hospitals
+841	Air Delivery & Freight Services
+842	Communication Equipment
+843	Networking & Communication Devices
+844	Machine Tools & Accessories
+845	Insurance Brokers
+846	Home Furnishing Stores
+847	Basic Materials Wholesale
+848	Application Software
+849	Accident & Health Insurance
+850	Life Insurance
+851	Telecom Services - Domestic
+852	Gold
+853	Drugs - Generic
+854	Small Tools & Accessories
+855	Waste Management
+856	Industrial Metals & Minerals
+857	Broadcasting - Radio
+858	REIT - Office
+859	Textile - Apparel Footwear & Accessories
+860	Drug Delivery
+861	Steel & Iron
+862	Home Furnishings & Fixtures
+863	REIT - Retail
+864	Pollution & Treatment Controls
+865	Rubber & Plastics
+866	Cigarettes
+867	Food Wholesale
+868	Farm & Construction Machinery
+869	Regional - Pacific Banks
+870	Cement
+871	Waste Management
+872	Farm & Construction Machinery
+873	Diversified Electronics
+874	Food - Major Diversified
+875	Personal Products
+876	Drug Delivery
+877	Regional - Southeast Banks
+878	Semiconductor - Integrated Circuits
+879	Regional - Midwest Banks
+880	Resorts & Casinos
+881	Trucking
+882	Farm & Construction Machinery
+883	Department Stores
+884	Broadcasting - Radio
+885	Aerospace/Defense Products & Services
+886	Diversified Utilities
+887	Healthcare Information Services
+888	Hospitals
+889	REIT - Office
+890	Regional - Southeast Banks
+891	Wholesale, Other
+892	Residential Construction
+893	Food Wholesale
+894	Restaurants
+895	Healthcare Information Services
+896	Money Center Banks
+897	Rental & Leasing Services
+898	Consumer Services
+899	Broadcasting - TV
+900	Real Estate Development
+901	Diversified Machinery
+902	Heavy Construction
+903	Technology
+904	Long Distance Carriers
+905	Foreign Regional Banks
+906	Major Airlines
+907	Drugs Wholesale
+908	Accident & Health Insurance
+909	Diversified Electronics
+910	Biotechnology
+911	Closed-End Fund - Equity
+912	Movie Production, Theaters
+913	Confectioners
+914	Small Tools & Accessories
+915	Investment Brokerage - Regional
+916	Data Storage Devices
+917	Regional - Northeast Banks
+918	Copper
+919	Oil & Gas Pipelines
+920	Synthetics
+921	Security Software & Services
+922	Foreign Utilities
+923	Regional - Midwest Banks
+924	Publishing - Newspapers
+925	Internet Software & Services
+926	Internet Software & Services
+927	Lumber, Wood Production
+928	Steel & Iron
+929	Department Stores
+930	Toys & Games
+931	Steel & Iron
+932	Diversified Utilities
+933	Farm & Construction Machinery
+934	Marketing Services
+935	REIT - Retail
+936	Beverages - Brewers
+937	Technical Services
+938	Aerospace/Defense Products & Services
+939	Waste Management
+940	Gas Utilities
+941	Appliances
+942	Publishing - Periodicals
+943	Business Equipment
+944	CATV Systems
+945	Grocery Stores
+946	REIT - Hotel/Motel
+947	Packaging & Containers
+948	Application Software
+949	Diversified Electronics
+950	Technical & System Software
+951	Healthcare
+952	Closed-End Fund - Foreign
+953	Catalog & Mail Order Houses
+954	Grocery Stores
+955	Networking & Communication Devices
+956	Basic Materials
+957	Regional - Northeast Banks
+958	Drugs - Generic
+959	Drug Stores
+960	Regional - Southeast Banks
+961	Oil & Gas Refining & Marketing
+962	Nonmetallic Mineral Mining
+963	Trucks & Other Vehicles
+964	Basic Materials
+965	Multimedia & Graphics Software
+966	Healthcare Information Services
+967	Home Furnishing Stores
+968	Semiconductor - Specialized
+969	Resorts & Casinos
+970	Food - Major Diversified
+971	Lumber, Wood Production
+972	Sporting Goods Stores
+973	Computer Peripherals
+974	Diversified Machinery
+975	Aluminum
+976	Food Wholesale
+977	Broadcasting - TV
+978	Water Utilities
+979	Cleaning Products
+980	Toy & Hobby Stores
+981	Telecom Services - Foreign
+982	Telecom Services - Domestic
+983	Multimedia & Graphics Software
+984	Water Utilities
+985	Multimedia & Graphics Software
+986	Auto Parts Stores
+987	Credit Services
+988	Conglomerates
+989	Cleaning Products
+990	Resorts & Casinos
+991	Business Equipment
+992	Electronic Equipment
+993	Electronics Stores
+994	Diversified Communication Services
+995	Personal Products
+996	Investment Brokerage - National
+997	Cement
+998	Long Distance Carriers
+999	Conglomerates
+\.
+
+
+--
+-- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('categories_id_seq', 999, true);
+
+
+--
+-- Data for Name: reservations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY reservations (id, name, id_restaurant, date, created) FROM stdin;
+\.
+
+
+--
+-- Name: reservations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('reservations_id_seq', 1, false);
+
+
+--
+-- Data for Name: restaurants; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY restaurants (id, name, rating, longitude, latitude, id_category) FROM stdin;
+1	Riffpedia	2	52.444671630859375	-18.198760986328125	1
+2	Gevee	2	84.294830322265625	23.5536041259765625	2
+3	Realbuzz	2	-26.475067138671875	-33.947479248046875	3
+4	Eamia	2	-109.35845947265625	-27.6254234313964844	4
+5	Wordtune	2	161.316619873046875	41.7302093505859375	5
+6	Topicstorm	2	22.9551849365234375	-88.9178848266601562	6
+7	Cogidoo	2	23.862213134765625	48.8050537109375	7
+8	LiveZ	2	-79.8358230590820312	88.4953460693359375	8
+9	Minyx	2	135.4503173828125	69.443878173828125	9
+10	Ooba	2	97.7099609375	-81.9235992431640625	10
+11	Snaptags	2	123.354705810546875	-0.01696014404296875	11
+12	Bubblebox	2	140.02301025390625	-87.4479751586914062	12
+13	Yodel	2	-160.653854370117188	27.4173049926757812	13
+14	Avavee	2	-41.42864990234375	30.0103912353515625	14
+15	Kanoodle	2	-85.5040359497070312	52.5847015380859375	15
+16	Gigaclub	2	88.146240234375	-83.6839218139648438	16
+17	Voolia	2	-95.0228118896484375	81.0178985595703125	17
+18	Aivee	2	121.0281982421875	81.6609649658203125	18
+19	Meetz	2	-89.2924041748046875	46.0780181884765625	19
+20	Aivee	2	-131.437713623046875	37.677978515625	20
+21	Photobug	2	-49.7481536865234375	54.5382537841796875	21
+22	Demimbu	2	127.1248779296875	-4.2405853271484375	22
+23	Nlounge	2	-58.9296951293945312	10.499664306640625	23
+24	Photojam	2	-147.461624145507812	-49.5672035217285156	24
+25	Vinte	2	-89.03631591796875	-70.9998397827148438	25
+26	Skidoo	2	90.55963134765625	41.244415283203125	26
+27	Dynabox	2	73.334320068359375	77.2834930419921875	27
+28	Jaxspan	2	138.285675048828125	-29.0365219116210938	28
+29	Livefish	2	-81.5702133178710938	-89.1299514770507812	29
+30	Realbridge	2	-117.767623901367188	-65.050262451171875	30
+31	Flipopia	2	-159.383056640625	39.756866455078125	31
+32	Jaxworks	2	125.84783935546875	10.3337783813476562	32
+33	Innojam	2	20.87518310546875	83.6837615966796875	33
+34	Realblab	2	-147.088775634765625	-51.3978500366210938	34
+35	Twinte	2	-139.416015625	-1.6982879638671875	35
+36	Kwinu	2	41.2721405029296875	-70.4863433837890625	36
+37	Bluezoom	2	62.929901123046875	7.905853271484375	37
+38	Bubbletube	2	162.35418701171875	80.0902099609375	38
+39	Tagopia	2	-152.426559448242188	-36.8387527465820312	39
+40	Yambee	2	-34.50640869140625	72.673675537109375	40
+41	Vimbo	2	32.9154510498046875	45.064300537109375	41
+42	Centidel	2	113.679107666015625	35.0896453857421875	42
+43	Ailane	2	58.6297149658203125	-62.1881942749023438	43
+44	Aimbu	2	21.993377685546875	61.9343719482421875	44
+45	Teklist	2	78.788482666015625	-82.0198211669921875	45
+46	Realcube	2	31.2111053466796875	61.556854248046875	46
+47	Zoomzone	2	-146.455703735351562	54.8917999267578125	47
+48	Shufflebeat	2	89.6236572265625	9.2015533447265625	48
+49	Wikibox	2	14.931793212890625	33.0715866088867188	49
+50	Mudo	2	48.68914794921875	-13.8857421875	50
+51	Fatz	2	126.74859619140625	-30.8008308410644531	51
+52	Browsezoom	2	-7.941070556640625	-8.79766082763671875	52
+53	Oyope	2	87.635894775390625	-39.8197059631347656	53
+54	Chatterbridge	2	19.0235595703125	2.54717254638671875	54
+55	Dabshots	2	154.661529541015625	-74.5345535278320312	55
+56	Tekfly	2	64.912078857421875	-40.8770599365234375	56
+57	Kanoodle	2	-71.4568939208984375	-10.3123550415039062	57
+58	Thoughtblab	2	-143.305633544921875	51.7352752685546875	58
+59	Thoughtsphere	2	12.5574188232421875	23.1579437255859375	59
+60	Realpoint	2	108.216461181640625	20.9642181396484375	60
+61	Realbuzz	2	-4.083648681640625	-5.48667144775390625	61
+62	Livetube	2	123.255767822265625	-17.6687698364257812	62
+63	Myworks	2	-100.808204650878906	16.0935440063476562	63
+64	Meejo	2	33.1124725341796875	55.2614288330078125	64
+65	Eayo	2	115.62188720703125	-47.86029052734375	65
+66	Avamm	2	-17.8398590087890625	-20.6591644287109375	66
+67	Eire	2	75.6522216796875	-34.2747535705566406	67
+68	Twinder	2	-151.8114013671875	-5.71852874755859375	68
+69	Pixonyx	2	61.2246551513671875	-36.9322738647460938	69
+70	Brightbean	2	175.9200439453125	52.869842529296875	70
+71	Mydeo	2	63.7952880859375	-16.200836181640625	71
+72	Tagpad	2	162.7381591796875	-65.5815048217773438	72
+73	Digitube	2	-5.16015625	-10.6386489868164062	73
+74	Realcube	2	-128.564117431640625	-46.4493293762207031	74
+75	Skinder	2	-73.0189208984375	61.544952392578125	75
+76	Voonte	2	129.849090576171875	26.5717086791992188	76
+77	Thoughtstorm	2	-140.714706420898438	-18.8134307861328125	77
+78	Quaxo	2	26.4621734619140625	-37.4278335571289062	78
+79	Rhyloo	2	151.881439208984375	-72.8954696655273438	79
+80	Kayveo	2	99.501983642578125	-5.07834625244140625	80
+81	Vidoo	2	167.85601806640625	40.5111236572265625	81
+82	Wordware	2	-52.3095474243164062	19.421417236328125	82
+83	Tagchat	2	-100.628868103027344	-24.5065155029296875	83
+84	Skinte	2	91.3621826171875	-25.8539810180664062	84
+85	Brainbox	2	143.394317626953125	8.4663848876953125	85
+86	Wordware	2	-126.493385314941406	42.5508880615234375	86
+87	Wikido	2	-118.223648071289062	77.5154571533203125	87
+88	Yambee	2	176.2955322265625	-33.0801200866699219	88
+89	Yakijo	2	29.57061767578125	-34.0545272827148438	89
+90	Zoomcast	2	-157.87322998046875	-60.4483871459960938	90
+91	Realcube	2	-40.5332489013671875	-35.8280105590820312	91
+92	Bluejam	2	0.9814300537109375	-5.002227783203125	92
+93	Rooxo	2	-17.13409423828125	3.56446075439453125	93
+94	Voomm	2	144.43743896484375	17.1175765991210938	94
+95	Avamm	2	137.27093505859375	-10.0281753540039062	95
+96	Roodel	2	-37.6019744873046875	-63.7094154357910156	96
+97	Meevee	2	102.361907958984375	-58.0003242492675781	97
+98	BlogXS	2	-164.822463989257812	-89.9928741455078125	98
+99	Yotz	2	61.407562255859375	4.740447998046875	99
+100	Jetwire	2	-55.3797760009765625	9.72153472900390625	100
+101	Bluezoom	2	-0.4994659423828125	87.140899658203125	101
+102	Dynava	2	-157.70782470703125	57.620758056640625	102
+103	Avamm	2	-19.5580291748046875	76.5453948974609375	103
+104	Twimbo	2	-10.41302490234375	52.156707763671875	104
+105	Eayo	2	130.49224853515625	-66.7730255126953125	105
+106	Tagpad	2	-150.84576416015625	85.6046600341796875	106
+107	Blognation	2	-135.70159912109375	-61.1513633728027344	107
+108	Thoughtworks	2	-114.06646728515625	71.5080718994140625	108
+109	Zoovu	2	-5.977447509765625	76.215576171875	109
+110	Divape	2	2.75244140625	-17.353729248046875	110
+111	Zoomcast	2	23.053070068359375	-77.5432891845703125	111
+112	Topicware	2	178.88543701171875	52.394927978515625	112
+113	Wikibox	2	5.338623046875	83.5448760986328125	113
+114	Trudoo	2	17.169952392578125	72.7516326904296875	114
+115	Jazzy	2	163.685546875	-41.5043830871582031	115
+116	Jabbertype	2	117.302215576171875	-64.393157958984375	116
+117	Blogtag	2	-150.418731689453125	33.445465087890625	117
+118	Fivespan	2	-120.35516357421875	-39.9864540100097656	118
+119	Twimm	2	47.62896728515625	68.7473907470703125	119
+120	Browsetype	2	-35.4697265625	-16.8460464477539062	120
+121	Avamm	2	63.3060302734375	-31.1795005798339844	121
+122	Demivee	2	88.49566650390625	-41.2454338073730469	122
+123	Voomm	2	63.444366455078125	-83.9822311401367188	123
+124	Skippad	2	-79.5633773803710938	-30.4325790405273438	124
+125	Feednation	2	162.749786376953125	-27.5692825317382812	125
+126	Kazio	2	150.818695068359375	-3.369171142578125	126
+127	InnoZ	2	145.2481689453125	42.23883056640625	127
+128	Skyvu	2	-163.121780395507812	-0.88942718505859375	128
+129	Oyope	2	100.862060546875	16.7060623168945312	129
+130	Npath	2	43.455474853515625	45.8514556884765625	130
+131	Skalith	2	-16.971435546875	-75.6989517211914062	131
+132	Ntag	2	-177.478317260742188	62.356536865234375	132
+133	Jabbertype	2	175.530853271484375	21.0302276611328125	133
+134	Skyvu	2	-25.8558502197265625	14.0784072875976562	134
+135	Centimia	2	13.737762451171875	-55.2234725952148438	135
+136	Browseblab	2	146.334991455078125	-83.1295852661132812	136
+137	Trudeo	2	-61.9714736938476562	-71.9293212890625	137
+138	Chatterbridge	2	-29.9942779541015625	-14.8892593383789062	138
+139	Photospace	2	68.0390625	7.05606842041015625	139
+140	Roomm	2	-34.1546783447265625	-1.715240478515625	140
+141	Meeveo	2	92.15557861328125	-27.5852928161621094	141
+142	Skajo	2	62.4861297607421875	-87.7033157348632812	142
+143	Jabbercube	2	76.66156005859375	-72.4780197143554688	143
+144	InnoZ	2	-94.4052734375	-54.2909317016601562	144
+145	Podcat	2	21.7222442626953125	50.3517303466796875	145
+146	Linklinks	2	29.2444305419921875	-19.5917739868164062	146
+147	Centidel	2	-153.71734619140625	-8.0543975830078125	147
+148	Shufflester	2	41.3249053955078125	-6.0645751953125	148
+149	InnoZ	2	48.93121337890625	-10.312164306640625	149
+150	Browsedrive	2	129.529937744140625	-48.7791709899902344	150
+151	Kanoodle	2	93.82110595703125	-49.5515708923339844	151
+152	Mycat	2	-12.6360931396484375	55.3166961669921875	152
+153	Buzzdog	2	114.088836669921875	-64.30279541015625	153
+154	Jetwire	2	45.5306854248046875	55.5657196044921875	154
+155	Skipstorm	2	168.97283935546875	-19.7161102294921875	155
+156	Mynte	2	-1.9892425537109375	-48.2557716369628906	156
+157	Mybuzz	2	-102.055641174316406	-86.001312255859375	157
+158	Youspan	2	152.576171875	16.8305511474609375	158
+159	Yotz	2	-1.233734130859375	-27.2753410339355469	159
+160	Skyndu	2	145.31829833984375	18.5669784545898438	160
+161	Cogidoo	2	-12.336395263671875	-41.5900764465332031	161
+162	Shufflester	2	-103.638145446777344	-23.64324951171875	162
+163	Twitterwire	2	-17.9894561767578125	-23.2449798583984375	163
+164	Aimbu	2	166.0338134765625	86.8599700927734375	164
+165	Gigabox	2	159.422393798828125	78.7815399169921875	165
+166	Feedfire	2	-167.988739013671875	-83.852203369140625	166
+167	Izio	2	23.0760345458984375	10.7685012817382812	167
+168	Zoomdog	2	-136.652633666992188	60.9364471435546875	168
+169	Skipfire	2	-77.7673263549804688	-22.4604339599609375	169
+170	Fivebridge	2	-129.766876220703125	-12.618438720703125	170
+171	Izio	2	78.99658203125	-40.8951644897460938	171
+172	Mudo	2	-132.4583740234375	-39.7405586242675781	172
+173	Mydeo	2	-10.1588287353515625	-54.6886787414550781	173
+174	Shufflester	2	118.874786376953125	87.8753509521484375	174
+175	Camimbo	2	7.38201904296875	-36.6701889038085938	175
+176	BlogXS	2	-79.162384033203125	-18.6685104370117188	176
+177	Zoonoodle	2	16.722412109375	15.3098220825195312	177
+178	Layo	2	154.679534912109375	-47.6073074340820312	178
+179	Photojam	2	9.61883544921875	50.748382568359375	179
+180	Avamba	2	82.784912109375	-74.1819839477539062	180
+181	Teklist	2	-135.927688598632812	-66.8172073364257812	181
+182	Topicware	2	116.650604248046875	71.5784759521484375	182
+183	Browsebug	2	-5.472442626953125	1.29070281982421875	183
+184	Skajo	2	-59.042877197265625	-68.5102386474609375	184
+185	Lazz	2	-51.3603363037109375	68.289276123046875	185
+186	Kaymbo	2	-102.889129638671875	54.4811248779296875	186
+187	Yodoo	2	-128.5828857421875	83.9910888671875	187
+188	Buzzdog	2	3.157257080078125	71.1480560302734375	188
+189	Twitternation	2	91.2691650390625	47.2498626708984375	189
+190	Wordpedia	2	59.7502593994140625	-42.2611961364746094	190
+191	Centimia	2	-99.0802154541015625	83.96368408203125	191
+192	Skiba	2	-8.19122314453125	-49.1710586547851562	192
+193	Eamia	2	-78.3738784790039062	-18.8929443359375	193
+194	Dynabox	2	26.3367767333984375	20.380859375	194
+195	Skidoo	2	46.5741729736328125	41.4327850341796875	195
+196	Skipfire	2	-99.345672607421875	-11.5621414184570312	196
+197	Snaptags	2	-93.792144775390625	-46.9488143920898438	197
+198	Aivee	2	101.16778564453125	-12.2129974365234375	198
+199	Bubbletube	2	115.209808349609375	23.965850830078125	199
+200	Eimbee	2	-155.617462158203125	-58.3257827758789062	200
+201	Skiptube	2	164.661712646484375	-7.02423095703125	201
+202	Eimbee	2	139.636199951171875	-7.45891571044921875	202
+203	Rooxo	2	3.47589111328125	-13.562957763671875	203
+204	Talane	2	-85.4441146850585938	81.7072906494140625	204
+205	Latz	2	177.813262939453125	67.864715576171875	205
+206	Oloo	2	-146.40802001953125	-30.8626289367675781	206
+207	Fatz	2	83.895263671875	-33.1383209228515625	207
+208	Mymm	2	-177.807525634765625	56.1609344482421875	208
+209	Brainverse	2	134.58984375	-34.7694473266601562	209
+210	Quatz	2	164.75048828125	6.98917388916015625	210
+211	Mybuzz	2	-91.1265945434570312	69.3847198486328125	211
+212	Camido	2	71.949676513671875	-63.9508209228515625	212
+213	Oyoba	2	137.65509033203125	-24.9105300903320312	213
+214	Zazio	2	127.240081787109375	63.2918853759765625	214
+215	Miboo	2	-60.691009521484375	-75.6657791137695312	215
+216	Rhynyx	2	88.67047119140625	67.2496795654296875	216
+217	Livetube	2	100.614837646484375	-74.0430221557617188	217
+218	Lazzy	2	156.221954345703125	0.970703125	218
+219	Kanoodle	2	78.6639404296875	77.1608428955078125	219
+220	Twitternation	2	110.5999755859375	8.02924346923828125	220
+221	Twiyo	2	-79.78643798828125	25.1932296752929688	221
+222	Skinder	2	-172.9635009765625	-17.5349273681640625	222
+223	Mydo	2	-77.2316970825195312	74.1021575927734375	223
+224	Jayo	2	128.802581787109375	43.2581634521484375	224
+225	Avamba	2	122.396331787109375	59.561981201171875	225
+226	Innojam	2	121.478363037109375	-38.634307861328125	226
+227	Meemm	2	-168.816009521484375	54.6950225830078125	227
+228	Kaymbo	2	-103.301071166992188	-52.7518997192382812	228
+229	Eire	2	-78.8090438842773438	-19.30517578125	229
+230	Flipopia	2	73.7501220703125	0.42864990234375	230
+231	Jayo	2	-62.1580047607421875	-80.3749008178710938	231
+232	Photospace	2	10.923797607421875	-70.4981536865234375	232
+233	Flipstorm	2	-64.8053207397460938	-87.7427978515625	233
+234	Skajo	2	-151.927902221679688	32.0579376220703125	234
+235	Twinte	2	-152.649688720703125	16.8860702514648438	235
+236	Eimbee	2	-161.635299682617188	-7.5095977783203125	236
+237	Dynabox	2	56.440948486328125	49.6173095703125	237
+238	Zoozzy	2	75.043792724609375	15.9390945434570312	238
+239	Oyoloo	2	-50.4275665283203125	-45.8396797180175781	239
+240	Quamba	2	-177.161666870117188	14.949310302734375	240
+241	Oyope	2	153.726959228515625	0.63150787353515625	241
+242	Lajo	2	152.887481689453125	-8.44667816162109375	242
+243	Ntag	2	-60.0719833374023438	55.3866729736328125	243
+244	Gigaclub	2	43.4355926513671875	-37.897430419921875	244
+245	Meemm	2	-139.25616455078125	-56.1908721923828125	245
+246	Topiclounge	2	-75.8885879516601562	-32.5211257934570312	246
+247	Twitternation	2	99.794525146484375	35.3381576538085938	247
+248	Oyoba	2	101.36285400390625	-41.1943817138671875	248
+249	Gigazoom	2	50.9518280029296875	-52.6348915100097656	249
+250	Trudoo	2	172.598724365234375	-40.7410011291503906	250
+251	Fivebridge	2	-101.819732666015625	-11.7730026245117188	251
+252	Quatz	2	119.09320068359375	-52.2559394836425781	252
+253	Brightdog	2	91.4588623046875	-1.22325897216796875	253
+254	Voomm	2	-169.002944946289062	-19.5276107788085938	254
+255	Browsetype	2	-103.141937255859375	35.9267120361328125	255
+256	Jabberstorm	2	-79.8858261108398438	47.3707122802734375	256
+257	Ntag	2	81.439544677734375	28.964263916015625	257
+258	Gigaclub	2	-154.098129272460938	-24.8680038452148438	258
+259	Riffpedia	2	-157.602279663085938	-39.0892715454101562	259
+260	Yata	2	-130.720916748046875	57.2299957275390625	260
+261	Dynazzy	2	-159.5543212890625	-49.5286216735839844	261
+262	Bubbletube	2	147.179718017578125	-53.5733413696289062	262
+263	Gevee	2	70.64569091796875	-21.4649124145507812	263
+264	Youopia	2	-110.993515014648438	-15.4114990234375	264
+265	Mymm	2	1.541534423828125	-81.7200164794921875	265
+266	Skyvu	2	163.535064697265625	-15.3749008178710938	266
+267	Chatterpoint	2	83.88397216796875	-45.4939651489257812	267
+268	Twitterlist	2	113.8084716796875	-39.6577949523925781	268
+269	Shufflester	2	-53.487274169921875	-76.2469940185546875	269
+270	Tagpad	2	144.27801513671875	-78.59027099609375	270
+271	Plajo	2	19.82598876953125	-20.9977493286132812	271
+272	Twitterbeat	2	144.11175537109375	-56.6942062377929688	272
+273	Mybuzz	2	-12.8321075439453125	-64.9241867065429688	273
+274	Twitternation	2	-166.943145751953125	75.3594818115234375	274
+275	Avavee	2	-52.5141220092773438	12.3322906494140625	275
+276	Skidoo	2	179.0091552734375	8.6457672119140625	276
+277	Skipstorm	2	156.239349365234375	11.3989791870117188	277
+278	Rhyloo	2	-170.46905517578125	75.926513671875	278
+279	Leexo	2	-28.0224151611328125	-74.4516754150390625	279
+280	Muxo	2	-60.1649093627929688	3.80649566650390625	280
+281	Innotype	2	173.99969482421875	-27.7621078491210938	281
+282	Vinte	2	87.146728515625	-49.7057380676269531	282
+283	Realcube	2	141.0238037109375	-43.8599395751953125	283
+284	Miboo	2	72.9384307861328125	66.68023681640625	284
+285	Dazzlesphere	2	94.117645263671875	48.0883026123046875	285
+286	Innojam	2	-0.701629638671875	45.9022979736328125	286
+287	Livetube	2	-108.685516357421875	42.2044219970703125	287
+288	Vidoo	2	-156.923019409179688	-53.7545204162597656	288
+289	Plambee	2	-111.800971984863281	-1.63114166259765625	289
+290	Yozio	2	-27.0853424072265625	-16.0873489379882812	290
+291	Jazzy	2	-81.82928466796875	-41.1347236633300781	291
+292	Abatz	2	142.38006591796875	-64.1812973022460938	292
+293	Quamba	2	-67.008331298828125	-39.0143775939941406	293
+294	Jayo	2	18.0680694580078125	88.21044921875	294
+295	Youspan	2	52.0068511962890625	-77.7092666625976562	295
+296	Eabox	2	59.7983856201171875	-69.3149337768554688	296
+297	Linkbuzz	2	-106.955635070800781	-13.31048583984375	297
+298	Voonder	2	-142.496261596679688	-36.5099716186523438	298
+299	Rhybox	2	-24.4720306396484375	16.4774322509765625	299
+300	Shuffledrive	2	-36.5803070068359375	63.6795654296875	300
+301	Fatz	2	-155.900894165039062	52.088043212890625	301
+302	Tanoodle	2	93.924896240234375	-22.9093399047851562	302
+303	Innotype	2	-139.93316650390625	-85.7510604858398438	303
+304	Eidel	2	154.018341064453125	-5.40114593505859375	304
+305	Rhyzio	2	29.0962982177734375	31.6070404052734375	305
+306	Quinu	2	24.939239501953125	47.6535491943359375	306
+307	Yacero	2	-120.581077575683594	56.3224029541015625	307
+308	Tagchat	2	-14.0273895263671875	-1.9196319580078125	308
+309	Brainlounge	2	91.709442138671875	-32.1171188354492188	309
+310	Blogpad	2	-98.4964370727539062	-58.5653533935546875	310
+311	Kwilith	2	108.65972900390625	79.229583740234375	311
+312	Topdrive	2	179.37432861328125	78.2455902099609375	312
+313	Oyope	2	90.983917236328125	-44.5155448913574219	313
+314	Gabspot	2	22.1376495361328125	-28.0666313171386719	314
+315	Gigashots	2	47.226226806640625	77.920684814453125	315
+316	Zoombox	2	-148.707015991210938	-10.884857177734375	316
+317	Jaxnation	2	135.409942626953125	57.3722991943359375	317
+318	Kimia	2	31.0973663330078125	26.19879150390625	318
+319	Voolia	2	-75.3049468994140625	15.1015090942382812	319
+320	Abatz	2	-19.2834930419921875	-23.2996063232421875	320
+321	Skimia	2	74.61163330078125	-24.1199798583984375	321
+322	Chatterbridge	2	57.675384521484375	24.035919189453125	322
+323	Skyndu	2	-112.834129333496094	-8.4766693115234375	323
+324	Photofeed	2	160.897125244140625	-12.8721923828125	324
+325	Thoughtsphere	2	-14.4646453857421875	-36.4223823547363281	325
+326	Divavu	2	-157.20135498046875	-65.1772232055664062	326
+327	Skippad	2	17.3823699951171875	81.8283233642578125	327
+328	Demimbu	2	111.7574462890625	-59.7113800048828125	328
+329	Thoughtbeat	2	29.2954254150390625	-27.2838172912597656	329
+330	Edgetag	2	130.2666015625	-38.1875114440917969	330
+331	Dabvine	2	101.847137451171875	-17.0896453857421875	331
+332	Skyble	2	99.83294677734375	-27.7542877197265625	332
+333	Blognation	2	-176.517166137695312	-87.4171142578125	333
+334	Dynabox	2	67.5628662109375	-87.3572235107421875	334
+335	Zava	2	54.7187347412109375	89.053680419921875	335
+336	Npath	2	41.46954345703125	26.9202194213867188	336
+337	Blogpad	2	-82.3719482421875	3.56640625	337
+338	Katz	2	-84.1930618286132812	-23.6038742065429688	338
+339	Realmix	2	178.8887939453125	45.3086090087890625	339
+340	Feedmix	2	-148.130279541015625	-35.7338943481445312	340
+341	Devpoint	2	65.905517578125	-7.46920013427734375	341
+342	Kwinu	2	-86.5915985107421875	-60.2593955993652344	342
+343	Aimbu	2	62.7604522705078125	15.3234100341796875	343
+344	Avamm	2	81.057464599609375	1.83119964599609375	344
+345	Mynte	2	90.49761962890625	-80.5159454345703125	345
+346	Centizu	2	155.2471923828125	-6.58588409423828125	346
+347	Feedfire	2	-34.2047576904296875	-69.3554534912109375	347
+348	Voonte	2	-14.52117919921875	35.8068695068359375	348
+349	Oyoba	2	-177.406051635742188	-49.3821868896484375	349
+350	Yacero	2	-43.4836883544921875	77.79925537109375	350
+351	Blogtag	2	-66.8224945068359375	11.105804443359375	351
+352	Buzzbean	2	131.69964599609375	-87.7966690063476562	352
+353	Livefish	2	-67.2406539916992188	-79.34124755859375	353
+354	Quimm	2	8.490570068359375	71.2880096435546875	354
+355	Wikibox	2	10.9232177734375	88.17889404296875	355
+356	Buzzster	2	33.9258880615234375	-34.4116249084472656	356
+357	Zoombox	2	-168.53594970703125	-11.1829299926757812	357
+358	Quire	2	-24.0661468505859375	-7.8483123779296875	358
+359	Zoonder	2	-102.776260375976562	-1.43316650390625	359
+360	Photobug	2	-51.7816162109375	-36.0431022644042969	360
+361	Eire	2	-7.63934326171875	38.3292236328125	361
+362	Edgetag	2	-162.01629638671875	-32.125213623046875	362
+363	Jaxnation	2	-175.613113403320312	21.865875244140625	363
+364	Ntag	2	64.4739532470703125	27.7139663696289062	364
+365	Rhynoodle	2	-129.099700927734375	5.265594482421875	365
+366	Edgeclub	2	100.33013916015625	-30.1395149230957031	366
+367	Skyba	2	-136.497512817382812	-69.3212432861328125	367
+368	Wordify	2	43.0611114501953125	-42.6516761779785156	368
+369	Mudo	2	-167.2705078125	36.6816787719726562	369
+370	Dynabox	2	-147.757354736328125	-30.881866455078125	370
+371	Zooxo	2	-151.57550048828125	62.12158203125	371
+372	Babblestorm	2	137.117156982421875	45.862213134765625	372
+373	Fiveclub	2	76.83453369140625	-41.6251602172851562	373
+374	Oyoloo	2	-36.0365753173828125	50.2002716064453125	374
+375	Ntag	2	168.80804443359375	-35.2649345397949219	375
+376	Eadel	2	55.99835205078125	67.8582916259765625	376
+377	Jetwire	2	112.0711669921875	16.6143341064453125	377
+378	Quinu	2	-63.6578521728515625	25.2297286987304688	378
+379	Youbridge	2	-174.93682861328125	-72.279693603515625	379
+380	Jabbersphere	2	-65.1982345581054688	-50.8132820129394531	380
+381	Trudoo	2	120.492095947265625	-72.257049560546875	381
+382	Gigaclub	2	-11.9521636962890625	5.344512939453125	382
+383	Jabberstorm	2	68.090576171875	47.2315521240234375	383
+384	Browsecat	2	107.464019775390625	-18.411346435546875	384
+385	Gabspot	2	-59.8394088745117188	18.0906448364257812	385
+386	Realbuzz	2	-105.516792297363281	85.6895294189453125	386
+387	Lazzy	2	117.911773681640625	-60.8050918579101562	387
+388	Browsetype	2	-118.375228881835938	36.5378799438476562	388
+389	Riffpath	2	4.6437225341796875	-75.9428939819335938	389
+390	Vitz	2	105.60107421875	44.6531524658203125	390
+391	Zooxo	2	83.12005615234375	19.3185653686523438	391
+392	Kaymbo	2	-142.391845703125	37.9499740600585938	392
+393	Chatterbridge	2	14.165008544921875	13.28497314453125	393
+394	Tagfeed	2	-36.162933349609375	49.852752685546875	394
+395	Yodo	2	20.015655517578125	46.184814453125	395
+396	Yakitri	2	32.942138671875	51.59814453125	396
+397	Fiveclub	2	-35.27935791015625	-29.9379386901855469	397
+398	Reallinks	2	124.0421142578125	-81.4517822265625	398
+399	Eamia	2	-23.891265869140625	2.13681793212890625	399
+400	Jayo	2	-135.880294799804688	-61.97161865234375	400
+401	Zoonder	2	138.01043701171875	0.9194488525390625	401
+402	Quimba	2	-171.9779052734375	-25.6867828369140625	402
+403	Oyope	2	-138.43060302734375	-45.9923324584960938	403
+404	Dabfeed	2	164.66650390625	-77.6770172119140625	404
+405	Tagcat	2	-29.186248779296875	-29.4410972595214844	405
+406	Skynoodle	2	-156.08624267578125	-84.1951217651367188	406
+407	Riffpedia	2	163.1663818359375	-20.4716644287109375	407
+408	Livetube	2	-145.097305297851562	27.4652633666992188	408
+409	Tagcat	2	28.0696868896484375	53.880584716796875	409
+410	Avamba	2	45.31353759765625	-2.3656463623046875	410
+411	Demizz	2	95.613250732421875	35.329925537109375	411
+412	Gabspot	2	-113.546455383300781	-19.2812881469726562	412
+413	Fanoodle	2	126.38824462890625	-27.5487747192382812	413
+414	Myworks	2	165.808685302734375	-64.4696197509765625	414
+415	Zoomdog	2	-171.4267578125	4.7593841552734375	415
+416	Dablist	2	145.386383056640625	-87.6566390991210938	416
+417	Rooxo	2	45.1136627197265625	77.723724365234375	417
+418	Realblab	2	-1.3489837646484375	13.5520782470703125	418
+419	Fivespan	2	156.231842041015625	40.6993865966796875	419
+420	Photobug	2	159.714813232421875	-11.839874267578125	420
+421	Yozio	2	-114.814384460449219	49.3087158203125	421
+422	Eire	2	1.777252197265625	24.1932144165039062	422
+423	Feedspan	2	28.49932861328125	-26.0363731384277344	423
+424	Jaxworks	2	-112.359626770019531	46.398956298828125	424
+425	Leexo	2	-38.5239105224609375	23.3816604614257812	425
+426	Wordify	2	-96.804962158203125	34.4029388427734375	426
+427	Vidoo	2	-53.545654296875	-71.2957382202148438	427
+428	Flashset	2	-108.365104675292969	36.0188827514648438	428
+429	Voonte	2	39.1187286376953125	29.4896316528320312	429
+430	Yambee	2	137.00738525390625	-78.5436859130859375	430
+431	Realpoint	2	-94.7410430908203125	-40.0290336608886719	431
+432	Realblab	2	-141.026092529296875	-86.5901031494140625	432
+433	Npath	2	125.255523681640625	-10.4333343505859375	433
+434	Devshare	2	151.79583740234375	26.1700592041015625	434
+435	Skiptube	2	119.56829833984375	39.0751800537109375	435
+436	Kayveo	2	39.4287872314453125	48.0395050048828125	436
+437	Twimbo	2	-107.869468688964844	16.0255584716796875	437
+438	Tagopia	2	-89.9187469482421875	49.63079833984375	438
+439	Digitube	2	14.4020843505859375	57.448699951171875	439
+440	Skyble	2	158.900146484375	-64.6858367919921875	440
+441	Feedbug	2	-103.98980712890625	77.85931396484375	441
+442	Feednation	2	-24.6067657470703125	-9.0710296630859375	442
+443	Flipopia	2	-172.452972412109375	20.479461669921875	443
+444	Twimbo	2	168.72625732421875	58.8646240234375	444
+445	Babblestorm	2	-142.060195922851562	56.2375335693359375	445
+446	Wikivu	2	153.539306640625	-49.1844711303710938	446
+447	Devpoint	2	86.966217041015625	72.237213134765625	447
+448	Gabvine	2	72.3979339599609375	78.96319580078125	448
+449	Skimia	2	137.59295654296875	32.2296676635742188	449
+450	Ooba	2	36.9542236328125	38.0135040283203125	450
+451	Thoughtsphere	2	-10.6124420166015625	32.74420166015625	451
+452	Meedoo	2	-129.960281372070312	-8.59844970703125	452
+453	Zooveo	2	171.15447998046875	71.1076507568359375	453
+454	Meemm	2	-133.787094116210938	-37.0937385559082031	454
+455	Bubblebox	2	-149.27044677734375	46.8604736328125	455
+456	Fliptune	2	54.089080810546875	20.3418426513671875	456
+457	Vimbo	2	54.6513671875	2.58757781982421875	457
+458	Jaloo	2	157.846405029296875	-43.675384521484375	458
+574	Gabtune	2	153.648712158203125	-84.6626663208007812	574
+459	Jaxworks	2	177.70355224609375	35.7031402587890625	459
+460	Meemm	2	139.851043701171875	-74.4098052978515625	460
+461	Skalith	2	46.07012939453125	24.90252685546875	461
+462	Twitternation	2	7.4695281982421875	-82.4810943603515625	462
+463	Gabtype	2	60.235198974609375	77.1722564697265625	463
+464	Meejo	2	175.188262939453125	47.9825592041015625	464
+465	Voolia	2	99.787628173828125	-89.52764892578125	465
+466	Brightdog	2	18.797149658203125	-18.6836013793945312	466
+467	Jabbertype	2	-91.6599273681640625	-56.067230224609375	467
+468	Oyoyo	2	-94.5550079345703125	87.951690673828125	468
+469	Gabtune	2	-58.1741180419921875	10.984954833984375	469
+470	Zooveo	2	54.1407470703125	-88.54827880859375	470
+471	Eayo	2	146.332855224609375	-45.9519691467285156	471
+472	Mudo	2	81.156158447265625	-40.1685791015625	472
+473	Feednation	2	-118.919662475585938	69.154632568359375	473
+474	Quaxo	2	162.3304443359375	69.7000274658203125	474
+475	Jetwire	2	-173.508544921875	-27.990814208984375	475
+476	Skynoodle	2	28.1750335693359375	-4.25994110107421875	476
+477	Kanoodle	2	110.19195556640625	89.8912200927734375	477
+478	Kazio	2	-19.6084136962890625	-86.4192276000976562	478
+479	Realpoint	2	121.473785400390625	-54.5626182556152344	479
+480	Snaptags	2	-139.216156005859375	17.2642135620117188	480
+481	Skinder	2	-148.815887451171875	48.6036224365234375	481
+482	Kwideo	2	-84.5101699829101562	-0.74356842041015625	482
+483	Skimia	2	54.05169677734375	-82.787445068359375	483
+484	Jazzy	2	-171.188827514648438	50.7579193115234375	484
+485	Zoombox	2	28.7720794677734375	27.1290512084960938	485
+486	Livefish	2	-48.671783447265625	18.30029296875	486
+487	Flashspan	2	-30.52740478515625	-7.5529937744140625	487
+488	Meevee	2	-37.4761962890625	88.7881317138671875	488
+489	Devify	2	-33.3721466064453125	-5.7764129638671875	489
+490	Voonix	2	57.497802734375	64.1820068359375	490
+491	Wordify	2	84.57904052734375	-8.84770965576171875	491
+492	Yodoo	2	-25.143402099609375	84.6187744140625	492
+493	Plambee	2	-85.752655029296875	23.160125732421875	493
+494	Voonder	2	-15.176483154296875	-80.6927719116210938	494
+495	Buzzshare	2	61.4083099365234375	-61.3090667724609375	495
+496	Divavu	2	-19.7235565185546875	68.4704742431640625	496
+497	Quinu	2	78.2227783203125	31.9019393920898438	497
+498	Edgepulse	2	-65.400299072265625	-12.7036590576171875	498
+499	Podcat	2	-102.812492370605469	40.2861175537109375	499
+500	Ailane	2	157.64422607421875	-59.4806594848632812	500
+501	Aivee	2	77.1929931640625	-46.1184425354003906	501
+502	Edgeblab	2	-148.431900024414062	19.6385650634765625	502
+503	Fanoodle	2	22.63720703125	47.2216033935546875	503
+504	Browsezoom	2	-121.474708557128906	-63.7944564819335938	504
+505	Jayo	2	114.851470947265625	16.2790374755859375	505
+506	Mudo	2	-142.807952880859375	32.1085281372070312	506
+507	Linklinks	2	23.61505126953125	48.307373046875	507
+508	Voomm	2	-27.9122161865234375	-39.5410118103027344	508
+509	Dabvine	2	-112.911453247070312	-5.85218048095703125	509
+510	Kwinu	2	23.12530517578125	-60.6655654907226562	510
+511	Cogilith	2	-85.3299331665039062	82.575958251953125	511
+512	Realcube	2	-31.250762939453125	35.8707809448242188	512
+513	Gabtune	2	-6.0269012451171875	78.0901641845703125	513
+514	Realbuzz	2	83.058074951171875	18.7300796508789062	514
+515	Twiyo	2	175.57080078125	26.580810546875	515
+516	Thoughtbridge	2	82.06573486328125	-52.8221969604492188	516
+517	Skaboo	2	-147.59234619140625	-36.7920875549316406	517
+518	Jabberbean	2	-35.119110107421875	38.178009033203125	518
+519	Skalith	2	132.389007568359375	75.28387451171875	519
+520	Wikivu	2	9.506561279296875	-65.2719879150390625	520
+521	Fivespan	2	120.416168212890625	33.2360687255859375	521
+522	Teklist	2	-21.61102294921875	1.07782745361328125	522
+523	Gabcube	2	-4.1224517822265625	-65.71820068359375	523
+524	Quatz	2	-40.66925048828125	-52.3277778625488281	524
+525	Quatz	2	56.94866943359375	-29.7206954956054688	525
+526	Realfire	2	-9.0923614501953125	-11.393951416015625	526
+527	Plajo	2	135.812042236328125	-51.9205360412597656	527
+528	Eimbee	2	-172.780014038085938	-27.9129867553710938	528
+529	Eidel	2	2.90582275390625	-2.344696044921875	529
+530	Minyx	2	106.960723876953125	-46.3491363525390625	530
+531	Gabvine	2	-3.043670654296875	-76.4626846313476562	531
+532	Jamia	2	23.644744873046875	-27.9898147583007812	532
+533	Rhynyx	2	1.21112060546875	43.7219085693359375	533
+534	Devpoint	2	47.6831817626953125	67.15032958984375	534
+535	Blogspan	2	159.030517578125	-70.134857177734375	535
+536	Quimm	2	177.864044189453125	-35.8006439208984375	536
+537	Tagtune	2	93.92950439453125	34.0268478393554688	537
+538	Skilith	2	-133.556060791015625	-57.1458511352539062	538
+539	Yadel	2	-108.471527099609375	19.9604339599609375	539
+540	Blogtag	2	90.743194580078125	6.12941741943359375	540
+541	Dynabox	2	96.0987548828125	-36.6759147644042969	541
+542	Youopia	2	-122.973228454589844	-25.373291015625	542
+543	Yakidoo	2	-152.448532104492188	36.0111236572265625	543
+544	Skynoodle	2	-152.207473754882812	43.0713653564453125	544
+545	Quatz	2	35.5502166748046875	42.5948486328125	545
+546	Zoomcast	2	-45.3862762451171875	-83.376220703125	546
+547	Twitterwire	2	79.955963134765625	-56.3146095275878906	547
+548	Photobug	2	34.6949920654296875	47.7625732421875	548
+549	Dynabox	2	-28.24224853515625	23.0203094482421875	549
+550	Divanoodle	2	31.8123016357421875	56.415496826171875	550
+551	Buzzshare	2	93.29931640625	-61.2772750854492188	551
+552	Livefish	2	85.375732421875	-34.4252738952636719	552
+553	Rhyloo	2	-145.947296142578125	-63.63018798828125	553
+554	Skyble	2	-158.169174194335938	-70.1140899658203125	554
+555	Bubblemix	2	170.46990966796875	-86.7882308959960938	555
+556	Yadel	2	86.817169189453125	-22.0516281127929688	556
+557	Trudoo	2	-175.797958374023438	-61.6635322570800781	557
+558	Kimia	2	115.578887939453125	79.623138427734375	558
+559	Yodo	2	-68.5719146728515625	-62.2127494812011719	559
+560	Avavee	2	152.73162841796875	89.1507568359375	560
+561	Camido	2	76.249267578125	53.1784515380859375	561
+562	Photobug	2	-115.757965087890625	67.5137481689453125	562
+563	Miboo	2	12.5567779541015625	30.574798583984375	563
+564	Ooba	2	-140.971878051757812	81.30731201171875	564
+565	Topicstorm	2	91.597381591796875	-18.663970947265625	565
+566	Geba	2	-142.54815673828125	50.8891448974609375	566
+567	Oyoloo	2	153.9932861328125	-86.6632308959960938	567
+568	Realbuzz	2	-137.499588012695312	3.18759918212890625	568
+569	Photofeed	2	-50.039093017578125	41.4172515869140625	569
+570	Devshare	2	-24.90606689453125	-60.3480377197265625	570
+571	Skiba	2	-160.456954956054688	21.6694183349609375	571
+572	Oyoyo	2	-142.2713623046875	11.9907302856445312	572
+573	Quimm	2	-107.118751525878906	-28.4931755065917969	573
+575	Quatz	2	-64.8641281127929688	44.7732086181640625	575
+576	Tazz	2	121.478271484375	27.3351669311523438	576
+577	Janyx	2	25.6864013671875	21.3267364501953125	577
+578	Yodel	2	-0.8514862060546875	41.1308746337890625	578
+579	Flashspan	2	178.533203125	-44.3983497619628906	579
+580	Edgeblab	2	145.622802734375	-77.5267181396484375	580
+581	Twitternation	2	-111.043922424316406	2.558502197265625	581
+582	Digitube	2	-101.869636535644531	40.8686676025390625	582
+583	Edgeclub	2	-159.594284057617188	23.9528350830078125	583
+584	Digitube	2	-60.8900527954101562	-63.0073699951171875	584
+585	Ntags	2	29.128448486328125	11.9405593872070312	585
+586	Quimm	2	-18.0974578857421875	-15.0761642456054688	586
+587	Photobug	2	-32.824066162109375	31.0488662719726562	587
+588	Realmix	2	142.165008544921875	25.5055007934570312	588
+589	Layo	2	168.773468017578125	18.5939559936523438	589
+590	Shufflebeat	2	-162.013229370117188	67.337188720703125	590
+591	Eadel	2	-171.196273803710938	85.316009521484375	591
+592	Dynabox	2	7.193939208984375	-36.6051101684570312	592
+593	Youopia	2	-27.9229583740234375	-84.3212738037109375	593
+594	Innojam	2	152.968841552734375	-62.5957107543945312	594
+595	Mydo	2	-40.3229827880859375	40.58935546875	595
+596	Wordware	2	-178.15325927734375	-77.5819320678710938	596
+597	Linkbridge	2	-66.6066436767578125	20.069915771484375	597
+598	Browsedrive	2	-121.846084594726562	11.5188140869140625	598
+599	Avamba	2	144.916229248046875	-67.6137313842773438	599
+600	Gabspot	2	-134.5966796875	11.3697738647460938	600
+601	Oloo	2	87.2501220703125	5.22170257568359375	601
+602	Yamia	2	-8.6104736328125	-53.3968696594238281	602
+603	Tagcat	2	-160.48419189453125	-8.97229766845703125	603
+604	Vitz	2	-16.998931884765625	-29.0715522766113281	604
+605	Tagfeed	2	74.0788421630859375	80.2060089111328125	605
+606	Avaveo	2	12.5019683837890625	-44.037109375	606
+607	Camido	2	-115.601226806640625	35.4884796142578125	607
+608	Eamia	2	86.9677734375	5.1335296630859375	608
+609	Livepath	2	119.87396240234375	61.6231231689453125	609
+610	Skibox	2	33.0910186767578125	83.468414306640625	610
+611	Jaloo	2	160.93548583984375	17.8353195190429688	611
+612	Wikibox	2	-144.445281982421875	48.3198394775390625	612
+613	Mycat	2	131.802581787109375	-52.1345367431640625	613
+614	Flipstorm	2	-112.633522033691406	-25.0038070678710938	614
+615	Zooveo	2	78.871185302734375	16.3155517578125	615
+616	Riffpedia	2	-51.6958770751953125	58.4968414306640625	616
+617	Yodo	2	-175.794830322265625	39.5362091064453125	617
+618	Thoughtbeat	2	-139.338287353515625	-41.1254425048828125	618
+619	Zazio	2	0.467437744140625	83.0166473388671875	619
+620	Kwideo	2	-3.9496612548828125	-51.4606513977050781	620
+621	Dynazzy	2	-132.052703857421875	-66.8705291748046875	621
+622	Livetube	2	75.8770904541015625	27.2984390258789062	622
+623	Edgeify	2	41.885009765625	77.564605712890625	623
+624	Kimia	2	74.9065399169921875	8.43611907958984375	624
+625	Kaymbo	2	58.7035064697265625	9.52136993408203125	625
+626	Meezzy	2	-35.0997467041015625	-29.0059776306152344	626
+627	Reallinks	2	-113.115814208984375	-50.9028663635253906	627
+628	Youfeed	2	-85.5286636352539062	20.282073974609375	628
+629	Fivechat	2	-89.2088165283203125	-7.6295623779296875	629
+630	Realcube	2	14.2879486083984375	-15.6234817504882812	630
+631	Realblab	2	-130.914276123046875	5.9768218994140625	631
+632	Snaptags	2	-89.6159515380859375	38.783966064453125	632
+633	Realbridge	2	161.078765869140625	22.7921066284179688	633
+634	Rhynyx	2	136.256195068359375	86.9725189208984375	634
+635	Photobug	2	97.4140625	-34.9897346496582031	635
+636	Wordpedia	2	-16.946502685546875	55.233673095703125	636
+637	Kare	2	134.745269775390625	-82.5437698364257812	637
+638	Jabbersphere	2	43.78570556640625	33.6567459106445312	638
+639	Dabvine	2	80.685699462890625	5.06011962890625	639
+640	Brightbean	2	-65.5281143188476562	-6.345428466796875	640
+641	Rhynoodle	2	7.3913726806640625	27.2338333129882812	641
+642	Rhycero	2	-38.8498382568359375	56.674072265625	642
+643	Gigabox	2	-179.439697265625	-88.3878021240234375	643
+644	Meevee	2	172.80413818359375	2.20867156982421875	644
+645	Eayo	2	-30.250885009765625	-6.2503662109375	645
+646	Skippad	2	10.0041961669921875	30.8730926513671875	646
+647	Skippad	2	87.48388671875	-6.0323638916015625	647
+648	Mycat	2	-56.1218643188476562	-48.44696044921875	648
+649	Miboo	2	-123.027389526367188	20.4453506469726562	649
+650	Topiclounge	2	-150.7705078125	76.273040771484375	650
+651	Vimbo	2	-58.3754501342773438	58.27850341796875	651
+652	Gabspot	2	95.847930908203125	77.241729736328125	652
+653	Realpoint	2	11.7247314453125	-71.1687164306640625	653
+654	Podcat	2	146.739654541015625	50.731201171875	654
+655	Kayveo	2	137.326751708984375	52.1783599853515625	655
+656	Mynte	2	-116.603431701660156	47.9617919921875	656
+657	Dabjam	2	63.4456329345703125	89.89117431640625	657
+658	Realcube	2	-65.2097396850585938	-86.1284103393554688	658
+659	Voomm	2	-33.1773681640625	62.364959716796875	659
+660	Trudeo	2	79.948211669921875	74.5733642578125	660
+661	Edgeclub	2	-175.738006591796875	30.1358642578125	661
+662	Jaxspan	2	-133.194808959960938	-61.6917304992675781	662
+663	Dynazzy	2	175.16461181640625	27.4896469116210938	663
+664	Gabcube	2	-111.03704833984375	67.9483795166015625	664
+665	Photofeed	2	161.26910400390625	-74.4886093139648438	665
+666	Wordpedia	2	-142.0770263671875	6.9736480712890625	666
+667	Brightdog	2	-142.44964599609375	-19.6242141723632812	667
+668	Livefish	2	-27.874176025390625	12.054718017578125	668
+669	Minyx	2	-35.81219482421875	-68.5416107177734375	669
+670	Tagcat	2	44.2291259765625	47.35235595703125	670
+671	Meevee	2	59.02081298828125	-4.46375274658203125	671
+672	Npath	2	90.0418701171875	-29.1209526062011719	672
+673	Aivee	2	120.50836181640625	-72.7146148681640625	673
+674	Linkbuzz	2	162.37005615234375	24.15386962890625	674
+675	Photofeed	2	-75.571746826171875	32.2644500732421875	675
+676	Aivee	2	-77.5790557861328125	-76.5380325317382812	676
+677	Midel	2	-93.6899261474609375	-23.6914749145507812	677
+678	Yakijo	2	-24.092926025390625	17.7783432006835938	678
+679	Divanoodle	2	-81.6787261962890625	-5.2846832275390625	679
+680	Rhynoodle	2	171.733734130859375	-88.648162841796875	680
+681	Voonyx	2	143.165252685546875	-10.636962890625	681
+682	Jaxbean	2	-140.846054077148438	72.394500732421875	682
+683	Devcast	2	-3.752593994140625	-47.8782691955566406	683
+684	Thoughtblab	2	28.780487060546875	14.2415771484375	684
+685	Twimm	2	50.5785675048828125	-32.4379692077636719	685
+686	Avavee	2	-34.7645111083984375	-20.1364059448242188	686
+687	Shuffledrive	2	-120.918075561523438	85.5067901611328125	687
+688	Blogpad	2	-44.5164794921875	29.4660491943359375	688
+689	Quatz	2	-61.5233078002929688	-9.025604248046875	689
+690	Zoonder	2	-4.149658203125	50.506103515625	690
+691	Gigaclub	2	-21.0158538818359375	-82.56378173828125	691
+692	Aivee	2	-153.93560791015625	83.0033111572265625	692
+693	Feedfire	2	-85.3749237060546875	39.7760467529296875	693
+694	Babbleset	2	-145.71038818359375	-5.32047271728515625	694
+695	Skiba	2	-129.677490234375	77.2964324951171875	695
+696	Jaxbean	2	150.541748046875	-81.8720779418945312	696
+697	Yacero	2	-172.344070434570312	17.5869369506835938	697
+698	Tavu	2	-29.294586181640625	-38.387237548828125	698
+699	Yodel	2	165.276153564453125	-20.6712112426757812	699
+700	Mydeo	2	173.897491455078125	-23.1344070434570312	700
+701	Browsedrive	2	-60.0825881958007812	76.60821533203125	701
+702	Thoughtbeat	2	83.98956298828125	33.633880615234375	702
+703	Dabfeed	2	-5.6791839599609375	19.5269317626953125	703
+704	Edgeblab	2	84.85260009765625	45.8253021240234375	704
+705	Yakijo	2	-13.843292236328125	5.373291015625	705
+706	Mynte	2	-155.094192504882812	8.2580718994140625	706
+707	Rhynyx	2	-13.4615020751953125	6.66754150390625	707
+708	InnoZ	2	-78.4528732299804688	-69.3157730102539062	708
+709	Gabtune	2	35.2069091796875	-34.9514312744140625	709
+710	Bluezoom	2	-5.9922943115234375	56.479461669921875	710
+711	Twitternation	2	18.3323974609375	18.39215087890625	711
+712	Skajo	2	-63.9027633666992188	-7.46079254150390625	712
+713	Abata	2	-129.29205322265625	-26.5923004150390625	713
+714	Feedspan	2	-146.511062622070312	-6.78211212158203125	714
+715	Oozz	2	31.98828125	62.5361785888671875	715
+716	Kwideo	2	-75.3429794311523438	83.2854156494140625	716
+717	Plambee	2	-8.10894775390625	56.3206634521484375	717
+718	Devcast	2	140.32977294921875	46.026580810546875	718
+719	Babbleblab	2	157.2196044921875	43.258270263671875	719
+720	Zava	2	-56.7884292602539062	0.2464599609375	720
+721	Mynte	2	-129.659515380859375	-67.2347412109375	721
+722	Wikizz	2	73.2574615478515625	78.691009521484375	722
+723	Mynte	2	142.757598876953125	-19.7733383178710938	723
+724	Youopia	2	107.193145751953125	-52.3486557006835938	724
+725	Trupe	2	-159.144927978515625	10.3546371459960938	725
+726	Pixonyx	2	-171.045135498046875	86.4845733642578125	726
+727	Brightbean	2	-37.425628662109375	-35.1191177368164062	727
+728	Realbridge	2	-63.7672653198242188	55.0259552001953125	728
+729	Agimba	2	94.540863037109375	48.9499664306640625	729
+730	Eimbee	2	84.767578125	-21.8822250366210938	730
+731	Dabshots	2	80.621856689453125	68.4652862548828125	731
+732	Fivespan	2	110.690185546875	9.97959136962890625	732
+733	Kimia	2	-139.421218872070312	42.6104583740234375	733
+734	Feednation	2	-52.58544921875	55.6407623291015625	734
+735	Yodoo	2	-97.3827285766601562	88.371246337890625	735
+736	InnoZ	2	-170.236557006835938	-68.7806015014648438	736
+737	Skinte	2	22.18560791015625	63.28662109375	737
+738	Skipfire	2	47.332305908203125	-29.4946441650390625	738
+739	Buzzster	2	-120.181106567382812	41.8535919189453125	739
+740	Roomm	2	15.057769775390625	26.51593017578125	740
+741	Buzzbean	2	133.05560302734375	40.7982635498046875	741
+742	Omba	2	-138.730224609375	-84.1085205078125	742
+743	Kaymbo	2	-76.1477737426757812	6.95143890380859375	743
+744	Devpoint	2	153.647735595703125	-46.3900985717773438	744
+745	Yodo	2	40.7639617919921875	32.8452987670898438	745
+746	Katz	2	42.8714599609375	25.327789306640625	746
+747	Chatterbridge	2	12.5860595703125	17.6578216552734375	747
+748	Omba	2	155.581787109375	-73.3887939453125	748
+749	Brainsphere	2	98.86553955078125	52.892181396484375	749
+750	Quinu	2	-88.3106918334960938	39.147369384765625	750
+751	Oyoloo	2	-163.507858276367188	24.9799270629882812	751
+752	Jabbercube	2	59.0264129638671875	-2.66133880615234375	752
+753	Jabbersphere	2	-107.095100402832031	-8.40885162353515625	753
+754	Izio	2	23.9242095947265625	-84.7161712646484375	754
+755	Thoughtbridge	2	-41.5156707763671875	6.811065673828125	755
+756	Jaloo	2	-148.146865844726562	55.467529296875	756
+757	Vinte	2	-116.760818481445312	-66.658447265625	757
+758	Mynte	2	66.1742095947265625	-33.4034843444824219	758
+759	DabZ	2	-164.584091186523438	33.2556686401367188	759
+760	Voolia	2	-54.8987350463867188	89.2611083984375	760
+761	Zoomdog	2	63.2263031005859375	-44.1098403930664062	761
+762	Voonyx	2	68.35699462890625	-85.0575332641601562	762
+763	Topicstorm	2	-148.617340087890625	86.924072265625	763
+764	Wordtune	2	-48.100738525390625	13.1808013916015625	764
+765	Oyoloo	2	118.562957763671875	74.6734466552734375	765
+766	Flashspan	2	-134.128768920898438	62.734344482421875	766
+767	Dabfeed	2	-124.799102783203125	-1.04087066650390625	767
+768	Skinte	2	144.33697509765625	-62.4260711669921875	768
+769	Npath	2	-114.921585083007812	-78.5239105224609375	769
+770	Riffwire	2	106.9493408203125	40.6939849853515625	770
+771	Oodoo	2	90.136566162109375	-46.7734909057617188	771
+772	Voolith	2	18.44696044921875	-53.1248664855957031	772
+773	Agimba	2	-61.0993499755859375	46.9806060791015625	773
+774	Voolia	2	-127.533401489257812	-51.0918502807617188	774
+775	Yodel	2	107.357574462890625	5.31473541259765625	775
+776	Photobug	2	29.19940185546875	-27.285797119140625	776
+777	Photobug	2	110.310455322265625	-60.1998443603515625	777
+778	Vimbo	2	-75.4502944946289062	71.084136962890625	778
+779	Flashspan	2	-7.331573486328125	-77.1002578735351562	779
+780	Shuffletag	2	20.6432952880859375	-28.31048583984375	780
+781	Eayo	2	84.148529052734375	5.9865264892578125	781
+782	Browsecat	2	144.62188720703125	78.0513763427734375	782
+783	Jamia	2	48.6690673828125	-77.6817092895507812	783
+784	Tambee	2	105.390045166015625	-30.5473709106445312	784
+785	Feedmix	2	128.8231201171875	-15.360504150390625	785
+786	Midel	2	22.90496826171875	75.5668792724609375	786
+787	Blognation	2	-49.774322509765625	6.6060638427734375	787
+788	Bluejam	2	58.6871185302734375	-9.09970855712890625	788
+789	Skynoodle	2	173.372100830078125	13.189697265625	789
+790	Abatz	2	14.2783660888671875	17.5079574584960938	790
+791	Skivee	2	-62.3447799682617188	-55.8661842346191406	791
+792	Zoomzone	2	148.543914794921875	-82.8705825805664062	792
+793	Shuffletag	2	152.62371826171875	-56.0810699462890625	793
+794	Rhybox	2	49.4470367431640625	86.0004730224609375	794
+795	Skajo	2	-119.756729125976562	-15.0390472412109375	795
+796	Skippad	2	-34.7919921875	69.6955718994140625	796
+797	Yozio	2	-81.101470947265625	-76.9161529541015625	797
+798	Yakijo	2	-177.405197143554688	-35.5368881225585938	798
+799	Linkbuzz	2	2.4017333984375	34.7079315185546875	799
+800	Devpoint	2	-156.507339477539062	-38.8341522216796875	800
+801	Livetube	2	-35.3402557373046875	16.0434417724609375	801
+802	Youspan	2	146.03399658203125	-3.186798095703125	802
+803	Pixonyx	2	-99.5358810424804688	84.168304443359375	803
+804	Zooveo	2	70.6560821533203125	19.1310806274414062	804
+805	Eimbee	2	-40.474334716796875	87.02825927734375	805
+806	Mita	2	23.37078857421875	-22.3378753662109375	806
+807	Shufflebeat	2	-146.23553466796875	1.6625213623046875	807
+808	Flashpoint	2	-93.7700347900390625	20.1662826538085938	808
+809	Devify	2	67.13507080078125	47.752899169921875	809
+810	Tavu	2	-75.1328353881835938	81.576385498046875	810
+811	Bluejam	2	-60.6342315673828125	-28.417694091796875	811
+812	Cogilith	2	3.8832550048828125	-60.3197097778320312	812
+813	Yacero	2	-141.025741577148438	-8.767974853515625	813
+814	Realbridge	2	-36.05743408203125	29.4023513793945312	814
+815	Quamba	2	100.31121826171875	-6.32509613037109375	815
+816	Browseblab	2	57.5316162109375	5.1973724365234375	816
+817	Camimbo	2	61.9741058349609375	7.1115570068359375	817
+818	Jaloo	2	124.35498046875	17.5953521728515625	818
+819	Meedoo	2	56.10205078125	-3.22258758544921875	819
+820	Divape	2	-10.37921142578125	-24.1194610595703125	820
+821	Thoughtmix	2	89.95135498046875	6.45538330078125	821
+822	Eare	2	80.5291748046875	-6.92198944091796875	822
+823	Wikibox	2	-117.635185241699219	83.3128509521484375	823
+824	Yambee	2	90.990386962890625	55.2161865234375	824
+825	Trunyx	2	117.591827392578125	-18.811798095703125	825
+826	Fadeo	2	13.758087158203125	-63.9968338012695312	826
+827	Dynabox	2	154.202362060546875	-68.5207595825195312	827
+828	Rhycero	2	135.30499267578125	-24.136627197265625	828
+829	Skaboo	2	-155.937957763671875	88.7917327880859375	829
+830	Gigabox	2	-151.867782592773438	-12.994049072265625	830
+831	Avaveo	2	-178.11663818359375	65.5854034423828125	831
+832	Photojam	2	-59.1729965209960938	24.7286148071289062	832
+833	Jatri	2	-126.909652709960938	85.408355712890625	833
+834	Skipfire	2	69.2250213623046875	-1.8472747802734375	834
+835	Realpoint	2	-123.605667114257812	77.6544647216796875	835
+836	Oyope	2	-158.920059204101562	52.06072998046875	836
+837	Yamia	2	-159.842361450195312	29.7566604614257812	837
+838	Youbridge	2	124.00201416015625	-10.6370620727539062	838
+839	LiveZ	2	98.027923583984375	38.1839141845703125	839
+840	Jaxworks	2	165.149932861328125	13.694610595703125	840
+841	Meevee	2	166.3408203125	35.9245071411132812	841
+842	Gevee	2	-95.2245941162109375	-51.1293525695800781	842
+843	Omba	2	77.85992431640625	64.3854217529296875	843
+844	Aibox	2	46.277099609375	-9.614776611328125	844
+845	Abatz	2	45.958984375	34.897491455078125	845
+846	Quinu	2	-165.7728271484375	68.0334625244140625	846
+847	Omba	2	97.69097900390625	37.6185150146484375	847
+848	Youfeed	2	-143.057205200195312	-18.39752197265625	848
+849	Realbuzz	2	41.391143798828125	-29.3909645080566406	849
+850	Einti	2	112.13916015625	-71.0492019653320312	850
+851	Twiyo	2	-132.299560546875	46.480865478515625	851
+852	Brightdog	2	87.9061279296875	3.10923004150390625	852
+853	Brightbean	2	-78.7272109985351562	-53.7818794250488281	853
+854	Geba	2	22.157989501953125	64.7259521484375	854
+855	Flashset	2	-167.9970703125	-59.8034210205078125	855
+856	Kare	2	72.7987823486328125	-82.4340744018554688	856
+857	BlogXS	2	20.462493896484375	40.62908935546875	857
+858	Edgetag	2	-74.850433349609375	17.6904144287109375	858
+859	Lajo	2	-68.7251434326171875	-38.4904289245605469	859
+860	Browseblab	2	17.0926666259765625	-61.8763427734375	860
+861	Jayo	2	52.3563079833984375	-73.7042083740234375	861
+862	Gigabox	2	86.6776123046875	-37.1695098876953125	862
+863	Buzzdog	2	-116.656478881835938	83.2294464111328125	863
+864	Gabspot	2	-73.8209915161132812	-59.682952880859375	864
+865	Jaxbean	2	-10.859893798828125	-43.2378997802734375	865
+866	Oyoyo	2	-131.898574829101562	21.2759780883789062	866
+867	Voonte	2	-60.7251510620117188	23.0963211059570312	867
+868	Oodoo	2	-27.6345672607421875	-4.7648773193359375	868
+869	Trunyx	2	-61.3205413818359375	-18.353118896484375	869
+870	Jaxnation	2	26.9422607421875	10.7845077514648438	870
+871	Jabberstorm	2	-96.8593063354492188	39.279388427734375	871
+872	Shufflebeat	2	-88.0982894897460938	62.8133544921875	872
+873	Edgeclub	2	5.3262939453125	2.18669891357421875	873
+874	Skivee	2	-85.49908447265625	20.3124465942382812	874
+875	Aimbo	2	-124.631690979003906	-52.4916000366210938	875
+876	Midel	2	140.757232666015625	-79.4511184692382812	876
+877	DabZ	2	56.800567626953125	-50.1482009887695312	877
+878	Voonte	2	-167.096649169921875	65.4330291748046875	878
+879	Tagtune	2	175.100006103515625	-56.1688804626464844	879
+880	Livefish	2	53.559295654296875	-51.7705726623535156	880
+881	Gigaclub	2	-34.947784423828125	-44.6821403503417969	881
+882	Flipbug	2	123.79412841796875	-64.66943359375	882
+883	Brainsphere	2	-2.3354034423828125	71.1138458251953125	883
+884	Youfeed	2	75.5741424560546875	-86.7014389038085938	884
+885	Linklinks	2	74.2824249267578125	-16.1831436157226562	885
+886	Digitube	2	128.393402099609375	89.6772918701171875	886
+887	Flipstorm	2	-16.5294036865234375	25.8314437866210938	887
+888	Avaveo	2	176.57830810546875	-31.1540718078613281	888
+889	Gigaclub	2	157.016204833984375	-59.8346786499023438	889
+890	Kwilith	2	-111.762969970703125	19.0587005615234375	890
+891	Zoomcast	2	10.9082183837890625	32.2113876342773438	891
+892	Topiclounge	2	174.673187255859375	-58.1819686889648438	892
+893	Feedfish	2	-44.9267425537109375	11.3678970336914062	893
+894	Vitz	2	136.316192626953125	56.1368560791015625	894
+895	Skajo	2	95.2080078125	-81.1192474365234375	895
+896	Brainbox	2	51.5896759033203125	-0.9023590087890625	896
+897	Linkbuzz	2	103.758758544921875	-17.59228515625	897
+898	Rhyzio	2	104.8096923828125	36.8508148193359375	898
+899	Realfire	2	-34.8416748046875	84.2676849365234375	899
+900	Thoughtbeat	2	47.1087493896484375	-25.690277099609375	900
+901	Aimbu	2	-126.939910888671875	-73.8603744506835938	901
+902	Jaxspan	2	-75.5252532958984375	-80.7986068725585938	902
+903	Rhycero	2	118.60552978515625	19.2040023803710938	903
+904	Agivu	2	66.875518798828125	43.66754150390625	904
+905	Wordware	2	-49.3731842041015625	-38.4225921630859375	905
+906	Jaxworks	2	139.95440673828125	86.09112548828125	906
+907	Skaboo	2	-20.676544189453125	-25.186309814453125	907
+908	Trupe	2	132.5572509765625	49.05914306640625	908
+909	Devcast	2	127.2333984375	64.2519989013671875	909
+910	Ntag	2	49.9320068359375	-59.1738624572753906	910
+911	Linkbridge	2	1.0749053955078125	59.9044189453125	911
+912	Livefish	2	-128.27276611328125	-0.98239898681640625	912
+913	Ailane	2	35.750762939453125	-27.8969802856445312	913
+914	Skipstorm	2	-120.692131042480469	12.8742828369140625	914
+915	Thoughtmix	2	-44.570159912109375	-30.0782127380371094	915
+916	Dablist	2	-81.9133148193359375	10.526641845703125	916
+917	Camido	2	64.5474395751953125	-75.7913970947265625	917
+918	Eire	2	-179.552642822265625	2.2687225341796875	918
+919	Ozu	2	67.53558349609375	45.55908203125	919
+920	Skippad	2	-107.509971618652344	-87.6139602661132812	920
+921	Vidoo	2	-156.68280029296875	42.7120361328125	921
+922	Meedoo	2	-110.822608947753906	-35.6113090515136719	922
+923	Jabberbean	2	109.702362060546875	39.07080078125	923
+924	Yoveo	2	-141.177459716796875	-72.563812255859375	924
+925	Meevee	2	-165.972076416015625	-19.3244476318359375	925
+926	Dabvine	2	-46.6133880615234375	30.3644943237304688	926
+927	Roodel	2	-45.3350677490234375	-20.7922515869140625	927
+928	Livepath	2	153.079254150390625	23.2190170288085938	928
+929	Mymm	2	-31.356109619140625	33.7448196411132812	929
+930	Linktype	2	-8.353302001953125	88.9683990478515625	930
+931	Twitterlist	2	179.85894775390625	82.263427734375	931
+932	Babbleblab	2	-72.9662322998046875	-83.1381683349609375	932
+933	Realfire	2	117.083984375	-53.2933158874511719	933
+934	Flashdog	2	-174.04693603515625	-23.7787094116210938	934
+935	Edgeblab	2	163.6990966796875	-18.6402206420898438	935
+936	Voonte	2	122.535247802734375	-73.5934829711914062	936
+937	Kaymbo	2	10.3482208251953125	-78.7603378295898438	937
+938	Skimia	2	55.2359466552734375	27.9353866577148438	938
+939	Wordware	2	-107.740631103515625	-18.3198089599609375	939
+940	Feedfish	2	38.59100341796875	-77.0941390991210938	940
+941	Dynabox	2	-93.335357666015625	17.995391845703125	941
+942	Edgepulse	2	68.800140380859375	25.9989395141601562	942
+943	Brainsphere	2	71.454742431640625	-9.26398468017578125	943
+944	Tagcat	2	108.370849609375	7.2969512939453125	944
+945	Mita	2	39.5662078857421875	46.1356201171875	945
+946	Vidoo	2	80.83258056640625	-15.6847991943359375	946
+947	Katz	2	-2.6928253173828125	21.3287429809570312	947
+948	Oyoloo	2	-28.91082763671875	53.9811248779296875	948
+949	Browsetype	2	-100.184226989746094	-19.2931976318359375	949
+950	Rhyzio	2	81.89019775390625	-64.5658187866210938	950
+951	Flipbug	2	10.11187744140625	38.3187713623046875	951
+952	Yadel	2	-25.9188690185546875	-27.6238441467285156	952
+953	Bluezoom	2	-38.6501617431640625	9.02741241455078125	953
+954	Fatz	2	-87.497467041015625	15.1105117797851562	954
+955	Bluezoom	2	3.960205078125	-41.47528076171875	955
+956	Oba	2	-126.236358642578125	3.2615203857421875	956
+957	Voolith	2	-170.776092529296875	-31.2285194396972656	957
+958	Dabjam	2	63.3235015869140625	54.3332672119140625	958
+959	Fliptune	2	-108.567268371582031	-1.086456298828125	959
+960	Agivu	2	33.0592193603515625	-27.2267723083496094	960
+961	Blogtag	2	75.3641357421875	-72.524993896484375	961
+962	Abata	2	-22.2989654541015625	10.5635452270507812	962
+963	Skalith	2	-86.5699081420898438	85.3366546630859375	963
+964	Livepath	2	-33.6224212646484375	-84.6515655517578125	964
+965	Jatri	2	51.1566925048828125	-4.02240753173828125	965
+966	Thoughtmix	2	-178.480636596679688	72.441925048828125	966
+967	Topiclounge	2	121.228179931640625	43.108795166015625	967
+968	Lazzy	2	-69.4296875	-32.1035385131835938	968
+969	Meezzy	2	-161.82403564453125	12.2608261108398438	969
+970	Thoughtbridge	2	-15.121429443359375	18.7405319213867188	970
+971	Divape	2	-72.7647552490234375	-27.8282089233398438	971
+972	Avamm	2	44.9925994873046875	-60.0713462829589844	972
+973	Jabbercube	2	23.4250030517578125	-84.3531265258789062	973
+974	Demivee	2	-16.2496337890625	-15.878387451171875	974
+975	Pixoboo	2	-177.07305908203125	68.49615478515625	975
+976	Myworks	2	138.734771728515625	79.67999267578125	976
+977	Skyble	2	-177.8070068359375	-49.7440605163574219	977
+978	Ailane	2	-173.60980224609375	-41.8273773193359375	978
+979	Jamia	2	80.629638671875	57.2220916748046875	979
+980	Feedfish	2	-157.708328247070312	39.827972412109375	980
+981	Zoombox	2	126.21826171875	-32.2030181884765625	981
+982	Jabbersphere	2	-176.610595703125	-89.699920654296875	982
+983	Npath	2	-59.5662307739257812	-49.9881820678710938	983
+984	Oba	2	62.415557861328125	-88.4130020141601562	984
+985	Innojam	2	95.5906982421875	-38.7269935607910156	985
+986	Lazzy	2	150.028594970703125	48.8178253173828125	986
+987	Jabbersphere	2	29.182373046875	-39.1296463012695312	987
+988	Twinder	2	120.438323974609375	-84.9503097534179688	988
+989	Muxo	2	49.5030059814453125	-1.50634002685546875	989
+990	Voonix	2	-115.845550537109375	63.49713134765625	990
+991	Cogibox	2	-118.258499145507812	53.0758209228515625	991
+992	Photofeed	2	-179.583404541015625	7.69998931884765625	992
+993	Rhyzio	2	65.1919708251953125	-48.8812141418457031	993
+994	Skidoo	2	-25.542999267578125	77.8209228515625	994
+995	Trudeo	2	-136.6273193359375	40.064300537109375	995
+996	Browseblab	2	-89.4353179931640625	-70.7561416625976562	996
+997	Feedfire	2	105.631988525390625	-35.1678047180175781	997
+998	Youbridge	2	-68.9838180541992188	64.763519287109375	998
+999	Vinder	2	-25.619415283203125	30.4590072631835938	999
+\.
+
+
+--
+-- Name: restaurants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('restaurants_id_seq', 999, true);
+
+
+--
+-- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reservations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY reservations
+    ADD CONSTRAINT reservations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: restaurants_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY restaurants
+    ADD CONSTRAINT restaurants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -22,3 +22,5 @@
       ping:
     - include: 'install-go.yml'
       tags: 'golang'
+    - include: 'setup-database.yml'
+      tags: 'postgre'

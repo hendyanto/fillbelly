@@ -51,6 +51,7 @@ func GetAllRestaurant() []Restaurant {
 					fmt.Println("ERROR", err)
 				}
 				results = append(results, Restaurant {
+					Id: r.Id,
 					Name: r.Name,
 					Rating: r.Rating,
 					Longitude: r.Longitude,
